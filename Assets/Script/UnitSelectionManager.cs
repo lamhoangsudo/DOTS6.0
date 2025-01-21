@@ -11,7 +11,6 @@ using UnityEngine;
 
 public class UnitSelectionManager : MonoBehaviour
 {
-    private const int Unit_Layer = 6;
     public static UnitSelectionManager Instance { get; private set; }
     public event EventHandler OnSelectAreaStart;
     public event EventHandler OnSelectAreaEnd;
@@ -35,13 +34,27 @@ public class UnitSelectionManager : MonoBehaviour
             //build query
             EntityQuery entityQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<Select>().Build(entityManager);
             //get result
+            //get array entity
             NativeArray<Entity> entities = entityQuery.ToEntityArray(Allocator.Temp);
+            //get array component
+            NativeArray<Select> selectArray = entityQuery.ToComponentDataArray<Select>(Allocator.Temp);
             for (int i = 0; i < entities.Length; i++)
             {
                 if (entityManager.IsComponentEnabled<Select>(entities[i]))
                 {
                     entityManager.SetComponentEnabled<Select>(entities[i], false);
+                    Select select = selectArray[i];
+                    //select.OnDeSelect = true;
+                    //select.OnSelect = false;
+                    select.SetSelect(false);
+                    selectArray[i] = select;
+                    entityManager.SetComponentData<Select>(entities[i], select);
                 }
+                //when run this code
+                //DOTS will run query again 
+                //but we modifile component before
+                //then query return 0
+                //entityQuery.CopyFromComponentDataArray(selectArray);
             }
             Rect selectionAreaRect = GetSelectAreaRect();
             float size = selectionAreaRect.width + selectionAreaRect.height;
@@ -65,14 +78,21 @@ public class UnitSelectionManager : MonoBehaviour
                         //...00000001
                         //...00001000
                         //only affects layer 6
-                        CollidesWith = 1u << Unit_Layer,
+                        CollidesWith = 1u << GameAssets.UNIT_LAYER,
                         GroupIndex = 0,
                     }
                 };
                 if(collisionWorld.CastRay(raycastInput, out Unity.Physics.RaycastHit raycastHit))
                 {
-                    if(entityManager.HasComponent<Unit>(raycastHit.Entity)) {
+                    if(entityManager.HasComponent<Unit>(raycastHit.Entity) 
+                        && entityManager.HasComponent<Select>(raycastHit.Entity)) {
+                        //hit a unit
                         entityManager.SetComponentEnabled<Select>(raycastHit.Entity, true);
+                        Select select = entityManager.GetComponentData<Select>(raycastHit.Entity);
+                        //select.OnSelect = true;
+                        //select.OnDeSelect = false;
+                        select.SetSelect(true);
+                        entityManager.SetComponentData<Select>(raycastHit.Entity, select);
                     }
                 }
 
@@ -83,6 +103,7 @@ public class UnitSelectionManager : MonoBehaviour
                 entityQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<LocalTransform, Unit>().WithPresent<Select>().Build(entityManager);
                 entities = entityQuery.ToEntityArray(Allocator.Temp);
                 NativeArray<LocalTransform> unitLocalTransforms = entityQuery.ToComponentDataArray<LocalTransform>(Allocator.Temp);
+                //selectArray = entityQuery.ToComponentDataArray<Select>(Allocator.Temp);
                 for (int i = 0; i < unitLocalTransforms.Length; i++)
                 {
                     LocalTransform unitLocalTranform = unitLocalTransforms[i];
@@ -91,8 +112,14 @@ public class UnitSelectionManager : MonoBehaviour
                     {
                         //unit is in select area
                         entityManager.SetComponentEnabled<Select>(entities[i], true);
+                        Select select = entityManager.GetComponentData<Select>(entities[i]);
+                        //select.OnSelect = true;
+                        //select.OnDeSelect = false;
+                        select.SetSelect(true);
+                        entityManager.SetComponentData(entities[i], select);
                     }
                 }
+                //entityQuery.CopyFromComponentDataArray<Select>(selectArray);
             }
             OnSelectAreaEnd?.Invoke(this, EventArgs.Empty);
         }

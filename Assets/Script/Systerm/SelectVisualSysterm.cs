@@ -1,7 +1,10 @@
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Transforms;
-
+//to set order systerm run 
+//all order systerms need to run in the same group
+[UpdateInGroup(typeof(LateSimulationSystemGroup))]
+[UpdateBefore(typeof(ResetEventSysterm))]
 partial struct SelectVisualSysterm : ISystem
 {
     [BurstCompile]
@@ -13,15 +16,19 @@ partial struct SelectVisualSysterm : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach(RefRO<Select> select in SystemAPI.Query<RefRO<Select>>())
+        foreach (RefRO<Select> select in SystemAPI.Query<RefRO<Select>>().WithPresent<Select>())
         {
-            RefRW<LocalTransform> visualSelectLocalTransform = SystemAPI.GetComponentRW<LocalTransform>(select.ValueRO.visualEntity);
-            visualSelectLocalTransform.ValueRW.Scale = select.ValueRO.scale;
-        }
-        foreach (RefRO<Select> select in SystemAPI.Query<RefRO<Select>>().WithDisabled<Select>())
-        {
-            RefRW<LocalTransform> visualSelectLocalTransform = SystemAPI.GetComponentRW<LocalTransform>(select.ValueRO.visualEntity);
-            visualSelectLocalTransform.ValueRW.Scale = 0f;
+            
+            if (select.ValueRO.OnSelect) 
+            { 
+                RefRW<LocalTransform> visualSelectLocalTransform = SystemAPI.GetComponentRW<LocalTransform>(select.ValueRO.visualEntity);
+                visualSelectLocalTransform.ValueRW.Scale = select.ValueRO.scale; 
+            }
+            if (select.ValueRO.OnDeSelect) 
+            {
+                RefRW<LocalTransform> visualSelectLocalTransform = SystemAPI.GetComponentRW<LocalTransform>(select.ValueRO.visualEntity);
+                visualSelectLocalTransform.ValueRW.Scale = 0f; 
+            }
         }
     }
 
