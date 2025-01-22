@@ -94,6 +94,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8188013610545178038, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: timerMax
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8188013610545178038, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: findingRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8188013610545178038, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: targetFaction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1417453425115334528, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: m_Name
       value: SoldierUnit
@@ -101,6 +113,10 @@ PrefabInstance:
     - target: {fileID: 3085390513673028996, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: faction
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3908455120813166443, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: healthMax
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7767491090691323197, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -155,6 +171,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1417453425115334528, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1464819271222489576}
+    - targetCorrespondingSourceObject: {fileID: 1417453425115334528, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 765313054869772200}
   m_SourcePrefab: {fileID: 100100000, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
 --- !u!4 &135509012734270476 stripped
 Transform:
@@ -192,3 +211,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d84cd204ffcaabf4cacf9bb5cf9b94ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &765313054869772200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8755289208574193329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1330071d453a3c439fdb1493917dc01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerMax: 2

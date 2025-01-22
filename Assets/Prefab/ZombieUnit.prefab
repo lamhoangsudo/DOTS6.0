@@ -8,6 +8,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8188013610545178038, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: timerMax
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8188013610545178038, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: findingRange
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8188013610545178038, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: targetFaction
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1283440409675301185, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -19,6 +31,10 @@ PrefabInstance:
     - target: {fileID: 3085390513673028996, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: faction
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3908455120813166443, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: healthMax
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6793136736159424692, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: m_Mesh
