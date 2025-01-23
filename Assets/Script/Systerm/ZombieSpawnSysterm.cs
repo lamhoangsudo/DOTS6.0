@@ -16,14 +16,21 @@ partial struct ZombieSpawnSysterm : ISystem
             RefRW<ZombieSpawn>>())
         {
             zombieSpawn.ValueRW.timer -= SystemAPI.Time.DeltaTime;
-            if(zombieSpawn.ValueRO.timer > 0)
+            if (zombieSpawn.ValueRO.timer > 0)
             {
                 continue;
             }
             zombieSpawn.ValueRW.timer = zombieSpawn.ValueRO.timerMax;
             Entity zombieEntity = state.EntityManager.Instantiate(entityReferenecs.zombie);
-            RefRW<LocalTransform> zombieLocalTranform = SystemAPI.GetComponentRW<LocalTransform > (zombieEntity);
-            zombieLocalTranform.ValueRW.Position = localTranform.ValueRO.Position;
+            SystemAPI.SetComponent(zombieEntity, LocalTransform.FromPosition(localTranform.ValueRO.Position));
+            SystemAPI.SetComponent(zombieEntity, new RandomWalking
+            {
+                distanceMax = zombieSpawn.ValueRO.zombieRandomWalkingDistanceMax,
+                distanceMin = zombieSpawn.ValueRO.zombieRandomWalkingDistanceMin,
+                targetPosition = localTranform.ValueRO.Position,
+                originPosition = localTranform.ValueRO.Position,
+                random = new Unity.Mathematics.Random((uint)zombieEntity.Index),
+            });
         }
     }
 }

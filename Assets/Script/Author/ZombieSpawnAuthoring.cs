@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ZombieSpawnAuthoring : MonoBehaviour
 {
-    [SerializeField] private float timerMax;
+    [SerializeField] private float timerMax, RandomWalkingDistanceMax, RandomWalkingDistanceMin;
     public class ZombieSpawnAuthoringBaker : Baker<ZombieSpawnAuthoring>
     {
         public override void Bake(ZombieSpawnAuthoring authoring)
@@ -13,6 +13,8 @@ public class ZombieSpawnAuthoring : MonoBehaviour
             {
                 timerMax = authoring.timerMax,
                 timer = authoring.timerMax,
+                zombieRandomWalkingDistanceMax = authoring.RandomWalkingDistanceMax,
+                zombieRandomWalkingDistanceMin = authoring.RandomWalkingDistanceMin,
             });
         }
     }

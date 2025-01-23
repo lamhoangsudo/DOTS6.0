@@ -15,7 +15,7 @@ public partial struct UnitMoverJob : IJobEntity
         )
     {
         float3 dir = unitMover.movePosition - localTransform.Position;
-        if(math.lengthsq(dir) < 2f)
+        if(math.lengthsq(dir) < UnitMoveSysterm.REACH_TARGET_DISTANCE_SQ)
         {
             velocity.Linear = float3.zero;
             velocity.Angular = float3.zero;

@@ -7,12 +7,7 @@ using UnityEngine;
 
 partial struct UnitMoveSysterm : ISystem
 {
-    [BurstCompile]
-    public void OnCreate(ref SystemState state)
-    {
-        
-    }
-
+    public const float REACH_TARGET_DISTANCE_SQ = 2f;
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
@@ -49,12 +44,6 @@ partial struct UnitMoveSysterm : ISystem
         //    velocity.ValueRW.Linear = dir * unitMover.ValueRO.moveSpeed;
         //    velocity.ValueRW.Angular = float3.zero;
         //}
-    }
-
-    [BurstCompile]
-    public void OnDestroy(ref SystemState state)
-    {
-        
     }
 }
 
