@@ -15,18 +15,27 @@ partial struct BulletMoveSysterm : ISystem
             Entity entity) 
             in  SystemAPI.Query<RefRO<Bullet>, RefRO<Target>, RefRW<LocalTransform>>().WithEntityAccess())
         {
+            if (target.ValueRO.targetEntity == Entity.Null)
+            {
+                entityCommandBuffer.DestroyEntity(entity);
+                continue;
+            }
             LocalTransform targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(target.ValueRO.targetEntity);
-            float3 moveDirection = targetLocalTransform.Position - localTransform.ValueRO.Position;
+            float3 hitPosition = targetLocalTransform.TransformPoint(SystemAPI.GetComponent<ShootVictim>(target.ValueRO.targetEntity).hitPosition);
+
+            float distanceBeforeSq = math.distancesq(localTransform.ValueRO.Position, hitPosition);
+
+            float3 moveDirection = hitPosition - localTransform.ValueRO.Position;
             moveDirection = math.normalize(moveDirection);
-            float distanceBeforeSq = math.distancesq(localTransform.ValueRO.Position, targetLocalTransform.Position);
-            localTransform.ValueRW.Position += moveDirection * bullet.ValueRO.speed * SystemAPI.Time.DeltaTime;
-            float distanceAfterSq = math.distancesq(localTransform.ValueRO.Position, targetLocalTransform.Position);
-            if(distanceAfterSq >= distanceBeforeSq)
+            localTransform.ValueRW.Position += bullet.ValueRO.speed * SystemAPI.Time.DeltaTime * moveDirection;
+
+            float distanceAfterSq = math.distancesq(localTransform.ValueRO.Position, hitPosition);
+            if(distanceAfterSq > distanceBeforeSq)
             {
                 //over shoot
-                localTransform.ValueRW.Position = targetLocalTransform.Position;
+                localTransform.ValueRW.Position = hitPosition;
             }
-            if (math.distancesq(localTransform.ValueRO.Position, targetLocalTransform.Position) <= 0.2f)
+            if (math.distancesq(localTransform.ValueRO.Position, hitPosition) < 0.2f)
             {
                 //close enough deal damage
                 RefRW<Health> healthTarget = SystemAPI.GetComponentRW<Health>(target.ValueRO.targetEntity);
