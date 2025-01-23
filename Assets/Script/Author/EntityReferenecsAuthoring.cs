@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EntityReferenecsAuthoring : MonoBehaviour
 {
-    [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject bullet, zombie;
     public class EntityReferenecsAuthoringBaker : Baker<EntityReferenecsAuthoring>
     {
         public override void Bake(EntityReferenecsAuthoring authoring)
@@ -12,6 +12,7 @@ public class EntityReferenecsAuthoring : MonoBehaviour
             AddComponent(entity, new EntityReferenecs
             {
                 bulletEntity = GetEntity(authoring.bullet, TransformUsageFlags.Dynamic),
+                zombie = GetEntity(authoring.zombie, TransformUsageFlags.Dynamic),
             });
         }
     }
