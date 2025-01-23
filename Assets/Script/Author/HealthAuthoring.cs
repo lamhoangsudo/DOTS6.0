@@ -13,6 +13,7 @@ public class HealthAuthoring : MonoBehaviour
             {
                 healthMax = authoring.healthMax,
                 health = authoring.healthMax,
+                OnValueHealthChange = true,
             });
         }
     }

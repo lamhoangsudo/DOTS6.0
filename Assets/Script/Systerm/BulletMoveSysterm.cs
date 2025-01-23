@@ -40,6 +40,7 @@ partial struct BulletMoveSysterm : ISystem
                 //close enough deal damage
                 RefRW<Health> healthTarget = SystemAPI.GetComponentRW<Health>(target.ValueRO.targetEntity);
                 healthTarget.ValueRW.health -= bullet.ValueRO.damage;
+                healthTarget.ValueRW.OnValueHealthChange = true;
                 entityCommandBuffer.DestroyEntity(entity);
             }
         }

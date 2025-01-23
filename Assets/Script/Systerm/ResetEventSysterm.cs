@@ -2,7 +2,7 @@ using Unity.Burst;
 using Unity.Entities;
 //this systerm will run the end of frame
 //this code set locate time when systerm run
-[UpdateInGroup(typeof(LateSimulationSystemGroup))]
+[UpdateInGroup(typeof(LateSimulationSystemGroup), OrderLast = true)]
 partial struct ResetEventSysterm : ISystem
 {
     [BurstCompile]
@@ -12,6 +12,10 @@ partial struct ResetEventSysterm : ISystem
         {
             select.ValueRW.OnDeSelect = false;
             select.ValueRW.OnSelect = false;
+        }
+        foreach (RefRW<Health> health in SystemAPI.Query<RefRW<Health>>())
+        {
+            health.ValueRW.OnValueHealthChange = false;
         }
     }
 }
