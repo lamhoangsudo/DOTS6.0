@@ -8,4 +8,10 @@ public struct ShootAttack : IComponentData
     public float damage;
     public float attackDistance;
     public float3 bulletSpawnPosition;
+    public OnShootEvent OnShoot;
+    public struct OnShootEvent
+    {
+        public float3 position;
+        public bool trigger;
+    }
 }

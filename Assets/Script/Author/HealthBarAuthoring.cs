@@ -1,4 +1,5 @@
 ﻿using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class HealthBarAuthoring : MonoBehaviour
@@ -17,6 +18,7 @@ public class HealthBarAuthoring : MonoBehaviour
                 //the purpose is to be able to have 4x4 matrix in PostTransformMatrix
                 barVisual = GetEntity(authoring.barVisual, TransformUsageFlags.NonUniformScale),
                 healthEntity = GetEntity(authoring.healthEntity, TransformUsageFlags.Dynamic),
+                cameraVector = Camera.main != null ? Camera.main.transform.forward : float3.zero,
             });
         }
     }

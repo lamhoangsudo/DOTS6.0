@@ -165,6 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 4997739651059249155, guid: 86d0029710e1a1442a456516353163e4, type: 3}
   zombie: {fileID: 2803946430105521514, guid: 8e36a618a7150f44f8978392e6d498f2, type: 3}
+  shootLight: {fileID: 7737706094737302405, guid: 436c9e871b2bec54d949782c81bf107c, type: 3}
 --- !u!1 &1121395168
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,9 +261,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 501267063937229962, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 501267063937229962, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 501267063937229962, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 765313054869772200, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
       propertyPath: damage
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 765313054869772200, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
       propertyPath: timerMax
