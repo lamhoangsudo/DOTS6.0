@@ -261,45 +261,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 501267063937229962, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 501267063937229962, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 501267063937229962, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 765313054869772200, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
-      propertyPath: damage
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 765313054869772200, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
-      propertyPath: timerMax
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 765313054869772200, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
-      propertyPath: attackDistance
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7238571323191800699, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
-      propertyPath: timerMax
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7238571323191800699, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
-      propertyPath: findingRange
-      value: 10
+    - target: {fileID: 3511529905755299551, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
+      propertyPath: m_Radius
+      value: 3.1
       objectReference: {fileID: 0}
     - target: {fileID: 8755289208574193329, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
       propertyPath: m_Name
       value: SoldierUnit
-      objectReference: {fileID: 0}
-    - target: {fileID: 8755289208574193329, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

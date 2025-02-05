@@ -45,7 +45,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8188013610545178038, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: findingRange
-      value: 3
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: -8188013610545178038, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: targetFaction
@@ -66,6 +66,14 @@ PrefabInstance:
     - target: {fileID: 3908455120813166443, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: healthMax
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4552134590842361608, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6526193721174505454, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6793136736159424692, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: m_Mesh
@@ -134,6 +142,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1417453425115334528, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6971430769931204000}
+    - targetCorrespondingSourceObject: {fileID: 1417453425115334528, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4712891216276777385}
   m_SourcePrefab: {fileID: 100100000, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
 --- !u!1 &2803946430105521514 stripped
 GameObject:
@@ -177,6 +188,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 259bb5669d47a4340b7b0a0608755f5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4712891216276777385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2803946430105521514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ac2ee5c65b541c4184ec4146a2e3ae2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackDamege: 5
+  attackTimerMax: 0.5
+  colliderSize: 0.81
 --- !u!4 &6812252934595280855 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7767491090691323197, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
