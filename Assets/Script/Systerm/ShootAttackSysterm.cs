@@ -5,6 +5,11 @@ using Unity.Transforms;
 partial struct ShootAttackSysterm : ISystem
 {
     [BurstCompile]
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<EntityReferenecs>();
+    }
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         EntityReferenecs entitiesReferences = SystemAPI.GetSingleton<EntityReferenecs>();
@@ -18,7 +23,7 @@ partial struct ShootAttackSysterm : ISystem
                 RefRW<LocalTransform>,
                 RefRW<ShootAttack>,
                 RefRO<Target>,
-                RefRW<UnitMover>>())
+                RefRW<UnitMover>>().WithDisabled<MoveOveride>())
         {
 
             if (target.ValueRO.targetEntity == Entity.Null)

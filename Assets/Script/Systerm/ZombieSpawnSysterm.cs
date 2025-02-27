@@ -5,6 +5,11 @@ using Unity.Transforms;
 partial struct ZombieSpawnSysterm : ISystem
 {
     [BurstCompile]
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<EntityReferenecs>();
+    }
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         EntityReferenecs entityReferenecs = SystemAPI.GetSingleton<EntityReferenecs>();

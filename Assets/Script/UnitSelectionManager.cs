@@ -126,17 +126,18 @@ public class UnitSelectionManager : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-            EntityQuery entityQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<UnitMover, Select>().Build(entityManager);
+            EntityQuery entityQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<Select>().WithPresent<MoveOveride>().Build(entityManager);
             NativeArray<Entity> entities = entityQuery.ToEntityArray(Allocator.Temp);
-            NativeArray<UnitMover> unitMovers = entityQuery.ToComponentDataArray<UnitMover>(Allocator.Temp);
-            NativeArray<float3> positionArray = GenerateMovePositionArray(MouseWorldPositionManager.mouseWorldPositionManager.GetMousePosition(), unitMovers.Length);
-            for (int i = 0; i < unitMovers.Length; i++)
+            NativeArray<MoveOveride> unitMoverOverides = entityQuery.ToComponentDataArray<MoveOveride>(Allocator.Temp);
+            NativeArray<float3> positionArray = GenerateMovePositionArray(MouseWorldPositionManager.mouseWorldPositionManager.GetMousePosition(), unitMoverOverides.Length);
+            for (int i = 0; i < unitMoverOverides.Length; i++)
             {
-                UnitMover unitMover = unitMovers[i];
-                unitMover.movePosition = positionArray[i];
-                unitMovers[i] = unitMover;
+                MoveOveride unitMoveOveride = unitMoverOverides[i];
+                unitMoveOveride.targetPosition = positionArray[i];
+                unitMoverOverides[i] = unitMoveOveride;
+                entityManager.SetComponentEnabled<MoveOveride>(entities[i], true);
             }
-            entityQuery.CopyFromComponentDataArray<UnitMover>(unitMovers);
+            entityQuery.CopyFromComponentDataArray<MoveOveride>(unitMoverOverides);
         }
     }
     public Rect GetSelectAreaRect()
