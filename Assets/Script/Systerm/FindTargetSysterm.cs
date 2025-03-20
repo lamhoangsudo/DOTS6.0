@@ -52,7 +52,7 @@ partial struct FindTargetSysterm : ISystem
                     if(findTarget.ValueRO.targetFaction == targetUnit.faction)
                     {
                         //valid target
-                        if (closestTargetEnity == null)
+                        if (closestTargetEnity == Entity.Null)
                         {
                             closestTargetEnity = distanceHit.Entity;
                             closestDistanceEnity = distanceHit.Distance;
