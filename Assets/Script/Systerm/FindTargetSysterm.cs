@@ -1,8 +1,10 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
+using Unity.VisualScripting;
 
 partial struct FindTargetSysterm : ISystem
 {
@@ -37,6 +39,9 @@ partial struct FindTargetSysterm : ISystem
                 CollidesWith = 1u << GameAssets.UNIT_LAYER,
                 GroupIndex = 0,
             };
+            Entity closestTargetEnity = Entity.Null;
+            float closestDistanceEnity = 0f;
+            float closestDistanceOffset = 2f;
             if (collisionWorld.OverlapSphere(localTransform.ValueRO.Position, findTarget.ValueRO.findingRange, ref distanceHitList, collisionFilter))
             {
                 foreach(DistanceHit distanceHit in distanceHitList)
@@ -47,7 +52,20 @@ partial struct FindTargetSysterm : ISystem
                     if(findTarget.ValueRO.targetFaction == targetUnit.faction)
                     {
                         //valid target
-                        target.ValueRW.targetEntity = distanceHit.Entity;
+                        if (closestTargetEnity == null)
+                        {
+                            closestTargetEnity = distanceHit.Entity;
+                            closestDistanceEnity = distanceHit.Distance;
+                        }
+                        else
+                        {
+                            if(distanceHit.Distance + closestDistanceOffset < closestDistanceEnity)
+                            {
+                                closestTargetEnity = distanceHit.Entity;
+                                closestDistanceEnity = distanceHit.Distance;
+                            }
+                        }
+                        target.ValueRW.targetEntity = closestTargetEnity;
                         break;
                     }
                 }

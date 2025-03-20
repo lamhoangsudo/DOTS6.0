@@ -79,6 +79,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4300000, guid: b6815ab17cf31b645b33d7e67d00ce14, type: 2}
+    - target: {fileID: 7041581727331613163, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: lostTargetDistance
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 7767491090691323197, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
