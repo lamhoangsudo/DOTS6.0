@@ -54,7 +54,7 @@ public class UnitSelectionManager : MonoBehaviour
                 //DOTS will run query again 
                 //but we modifile component before
                 //then query return 0
-                //entityQuery.CopyFromComponentDataArray(selectArray);
+                //entityQueryMoveOveride.CopyFromComponentDataArray(selectArray);
             }
             Rect selectionAreaRect = GetSelectAreaRect();
             float size = selectionAreaRect.width + selectionAreaRect.height;
@@ -103,7 +103,7 @@ public class UnitSelectionManager : MonoBehaviour
                 entityQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<LocalTransform, Unit>().WithPresent<Select>().Build(entityManager);
                 entities = entityQuery.ToEntityArray(Allocator.Temp);
                 NativeArray<LocalTransform> unitLocalTransforms = entityQuery.ToComponentDataArray<LocalTransform>(Allocator.Temp);
-                //selectArray = entityQuery.ToComponentDataArray<Select>(Allocator.Temp);
+                //selectArray = entityQueryMoveOveride.ToComponentDataArray<Select>(Allocator.Temp);
                 for (int i = 0; i < unitLocalTransforms.Length; i++)
                 {
                     LocalTransform unitLocalTranform = unitLocalTransforms[i];
@@ -119,25 +119,81 @@ public class UnitSelectionManager : MonoBehaviour
                         entityManager.SetComponentData(entities[i], select);
                     }
                 }
-                //entityQuery.CopyFromComponentDataArray<Select>(selectArray);
+                //entityQueryMoveOveride.CopyFromComponentDataArray<Select>(selectArray);
             }
             OnSelectAreaEnd?.Invoke(this, EventArgs.Empty);
         }
         if (Input.GetMouseButtonDown(1))
         {
+            bool isAttackingSingleTarget = false;
             EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-            EntityQuery entityQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<Select>().WithPresent<MoveOveride>().Build(entityManager);
-            NativeArray<Entity> entities = entityQuery.ToEntityArray(Allocator.Temp);
-            NativeArray<MoveOveride> unitMoverOverides = entityQuery.ToComponentDataArray<MoveOveride>(Allocator.Temp);
-            NativeArray<float3> positionArray = GenerateMovePositionArray(MouseWorldPositionManager.mouseWorldPositionManager.GetMousePosition(), unitMoverOverides.Length);
-            for (int i = 0; i < unitMoverOverides.Length; i++)
+            //set target
+            //another way to build query
+            EntityQuery entityQuery = entityManager.CreateEntityQuery(typeof(PhysicsWorldSingleton));
+            //another way to get result
+            PhysicsWorldSingleton physicsWorldSingleton = entityQuery.GetSingleton<PhysicsWorldSingleton>();
+            CollisionWorld collisionWorld = physicsWorldSingleton.CollisionWorld;
+            RaycastInput raycastInput = new()
             {
-                MoveOveride unitMoveOveride = unitMoverOverides[i];
-                unitMoveOveride.targetPosition = positionArray[i];
-                unitMoverOverides[i] = unitMoveOveride;
-                entityManager.SetComponentEnabled<MoveOveride>(entities[i], true);
+                Start = Camera.main.ScreenPointToRay(Input.mousePosition).GetPoint(0),
+                End = Camera.main.ScreenPointToRay(Input.mousePosition).GetPoint(999f),
+                Filter = new CollisionFilter()
+                {
+                    //...11111111
+                    //belong to all layers
+                    BelongsTo = ~0u,
+                    //...00000001
+                    //...00001000
+                    //only affects layer 6
+                    CollidesWith = 1u << GameAssets.UNIT_LAYER,
+                    GroupIndex = 0,
+                }
+            };
+            if (collisionWorld.CastRay(raycastInput, out Unity.Physics.RaycastHit raycastHit))
+            {
+                if (entityManager.HasComponent<Unit>(raycastHit.Entity))
+                {
+                    //hit a unit
+                    Unit targetPoint = entityManager.GetComponentData<Unit>(raycastHit.Entity);
+                    if (targetPoint.faction == Faction.Zombie)
+                    {
+                        isAttackingSingleTarget = true;
+                        EntityQuery entityQuerySelect = new EntityQueryBuilder(Allocator.Temp).WithAll<Select>().WithPresent<TargetOveride>().Build(entityManager);
+                        NativeArray<Entity> entities = entityQuerySelect.ToEntityArray(Allocator.Temp);
+                        NativeArray<TargetOveride> unitTargetOverides = entityQuerySelect.ToComponentDataArray<TargetOveride>(Allocator.Temp);
+                        for (int i = 0; i < unitTargetOverides.Length; i++)
+                        {
+                            TargetOveride targetOveride = unitTargetOverides[i];
+                            targetOveride.targetEntity = raycastHit.Entity;
+                            entityManager.SetComponentEnabled<MoveOveride>(entities[i], false);
+                        }
+                        entityQuerySelect.CopyFromComponentDataArray<TargetOveride>(unitTargetOverides);
+                    }
+                    //else
+                    //{
+                    //    isAttackingSingleTarget = false;
+                    //}
+                }
             }
-            entityQuery.CopyFromComponentDataArray<MoveOveride>(unitMoverOverides);
+            if (!isAttackingSingleTarget)
+            {
+                EntityQuery entityQueryMoveOveride = new EntityQueryBuilder(Allocator.Temp).WithAll<Select>().WithPresent<MoveOveride, TargetOveride>().Build(entityManager);
+                NativeArray<Entity> entities = entityQueryMoveOveride.ToEntityArray(Allocator.Temp);
+                NativeArray<MoveOveride> unitMoverOverides = entityQueryMoveOveride.ToComponentDataArray<MoveOveride>(Allocator.Temp);
+                NativeArray<TargetOveride> unitTargetOverides = entityQueryMoveOveride.ToComponentDataArray<TargetOveride>(Allocator.Temp);
+                NativeArray<float3> positionArray = GenerateMovePositionArray(MouseWorldPositionManager.mouseWorldPositionManager.GetMousePosition(), unitMoverOverides.Length);
+                for (int i = 0; i < unitMoverOverides.Length; i++)
+                {
+                    TargetOveride targetOveride = unitTargetOverides[i];
+                    targetOveride.targetEntity = Entity.Null;
+                    MoveOveride unitMoveOveride = unitMoverOverides[i];
+                    unitMoveOveride.targetPosition = positionArray[i];
+                    unitMoverOverides[i] = unitMoveOveride;
+                    entityManager.SetComponentEnabled<MoveOveride>(entities[i], true);
+                }
+                entityQueryMoveOveride.CopyFromComponentDataArray<MoveOveride>(unitMoverOverides);
+                entityQueryMoveOveride.CopyFromComponentDataArray<TargetOveride>(unitTargetOverides);
+            }
         }
     }
     public Rect GetSelectAreaRect()

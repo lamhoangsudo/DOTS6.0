@@ -17,13 +17,21 @@ partial struct FindTargetSysterm : ISystem
         foreach((
             RefRO<LocalTransform> localTransform, 
             RefRW<FindTarget> findTarget,
-            RefRW<Target> target) 
+            RefRW<Target> target,
+            RefRO<TargetOveride> targetOveride) 
             in SystemAPI.Query<
                 RefRO<LocalTransform>, 
                 RefRW<FindTarget>, 
-                RefRW<Target>
+                RefRW<Target>,
+                RefRO<TargetOveride>
                 >())
         {
+            if (targetOveride.ValueRO.targetEntity != Entity.Null)
+            {
+                //has target point
+                target.ValueRW.targetEntity = targetOveride.ValueRO.targetEntity;
+                continue;
+            }
             //count down time find target
             findTarget.ValueRW.timer -= SystemAPI.Time.DeltaTime;
             if(findTarget.ValueRO.timer > 0)
@@ -42,6 +50,7 @@ partial struct FindTargetSysterm : ISystem
             Entity closestTargetEnity = Entity.Null;
             float closestDistanceEnity = 0f;
             float closestDistanceOffset = 2f;
+
             if (collisionWorld.OverlapSphere(localTransform.ValueRO.Position, findTarget.ValueRO.findingRange, ref distanceHitList, collisionFilter))
             {
                 foreach(DistanceHit distanceHit in distanceHitList)

@@ -9,8 +9,12 @@ partial struct LostTargetSysterm : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach ((RefRW<Target> target, RefRO<LocalTransform> localTranform, RefRO<LostTarget> lostTarget) in SystemAPI.Query<RefRW<Target>, RefRO<LocalTransform>, RefRO<LostTarget>>())
+        foreach ((RefRW<Target> target, RefRO<LocalTransform> localTranform, RefRO<LostTarget> lostTarget, RefRO<TargetOveride> targetOveride) in SystemAPI.Query<RefRW<Target>, RefRO<LocalTransform>, RefRO<LostTarget>, RefRO<TargetOveride>>())
         {
+            if(targetOveride.ValueRO.targetEntity != Entity.Null)
+            {
+                continue;
+            }
             if (target.ValueRO.targetEntity != Entity.Null)
             {
                 LocalTransform targetPosition = SystemAPI.GetComponent<LocalTransform>(target.ValueRO.targetEntity);

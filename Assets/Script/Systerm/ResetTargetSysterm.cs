@@ -15,5 +15,13 @@ partial struct ResetTargetSysterm : ISystem
                 target.ValueRW.targetEntity = Entity.Null;
             }
         }
+        foreach (RefRW<TargetOveride> targetOveride in SystemAPI.Query<RefRW<TargetOveride>>())
+        {
+            if (targetOveride.ValueRO.targetEntity == Entity.Null) continue;
+            if (!SystemAPI.Exists(targetOveride.ValueRO.targetEntity) || !SystemAPI.HasComponent<LocalTransform>(targetOveride.ValueRO.targetEntity))
+            {
+                targetOveride.ValueRW.targetEntity = Entity.Null;
+            }
+        }
     }
 }
