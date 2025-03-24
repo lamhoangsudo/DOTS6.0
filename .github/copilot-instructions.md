@@ -2,7 +2,7 @@
 - Project name: DOTS6.0
 - Unity version: Unity 6000.0.36f1
 - Active game object:
-  - Name: UniitSelectManager
+  - Name: SoldierUnit
   - Tag: Untagged
-  - Layer: Default
+  - Layer: Unit
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
