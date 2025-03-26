@@ -20,14 +20,14 @@ partial struct ResetTargetSysterm : ISystem
         localTransformComponentLookup.Update(ref state);
         ResetTargetJob resetTargetJob = new()
         {
-            entityStorageInfoLookup = state.GetEntityStorageInfoLookup(),
-            localTransformComponentLookup = state.GetComponentLookup<LocalTransform>()
+            entityStorageInfoLookup = entityStorageInfoLookup,
+            localTransformComponentLookup = localTransformComponentLookup,
         };
         resetTargetJob.ScheduleParallel();
         ResetTargetOverrideJob resetTargetOverideJob = new()
         {
-            entityStorageInfoLookup = state.GetEntityStorageInfoLookup(),
-            localTransformComponentLookup = state.GetComponentLookup<LocalTransform>()
+            entityStorageInfoLookup = entityStorageInfoLookup,
+            localTransformComponentLookup = localTransformComponentLookup,
         };
         resetTargetOverideJob.ScheduleParallel();
         //foreach(RefRW<Target> targetOveride in SystemAPI.Query<RefRW<Target>>())
