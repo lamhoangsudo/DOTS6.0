@@ -1,27 +1,80 @@
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 [UpdateInGroup(typeof(SimulationSystemGroup), OrderFirst = true)]
 partial struct ResetTargetSysterm : ISystem
 {
+    private EntityStorageInfoLookup entityStorageInfoLookup;
+    private ComponentLookup<LocalTransform> localTransformComponentLookup;
+    [BurstCompile]
+    public void OnCreate(ref SystemState state)
+    {
+        entityStorageInfoLookup = state.GetEntityStorageInfoLookup();
+        localTransformComponentLookup = state.GetComponentLookup<LocalTransform>();
+    }
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach(RefRW<Target> target in SystemAPI.Query<RefRW<Target>>())
+        entityStorageInfoLookup.Update(ref state);
+        localTransformComponentLookup.Update(ref state);
+        ResetTargetJob resetTargetJob = new()
         {
-            if (target.ValueRO.targetEntity == Entity.Null) continue;
-            if(!SystemAPI.Exists(target.ValueRO.targetEntity) || !SystemAPI.HasComponent<LocalTransform>(target.ValueRO.targetEntity))
-            {
-                target.ValueRW.targetEntity = Entity.Null;
-            }
+            entityStorageInfoLookup = state.GetEntityStorageInfoLookup(),
+            localTransformComponentLookup = state.GetComponentLookup<LocalTransform>()
+        };
+        resetTargetJob.ScheduleParallel();
+        ResetTargetOverrideJob resetTargetOverideJob = new()
+        {
+            entityStorageInfoLookup = state.GetEntityStorageInfoLookup(),
+            localTransformComponentLookup = state.GetComponentLookup<LocalTransform>()
+        };
+        resetTargetOverideJob.ScheduleParallel();
+        //foreach(RefRW<Target> targetOveride in SystemAPI.Query<RefRW<Target>>())
+        //{
+        //    if (targetOveride.ValueRO.targetEntity == Entity.Null) continue;
+        //    if(!SystemAPI.Exists(targetOveride.ValueRO.targetEntity) || !SystemAPI.HasComponent<LocalTransform>(targetOveride.ValueRO.targetEntity))
+        //    {
+        //        targetOveride.ValueRW.targetEntity = Entity.Null;
+        //    }
+        //}
+        //foreach (RefRW<TargetOveride> targetOveride in SystemAPI.Query<RefRW<TargetOveride>>())
+        //{
+        //    if (targetOveride.ValueRO.targetEntity == Entity.Null) continue;
+        //    if (!SystemAPI.Exists(targetOveride.ValueRO.targetEntity) || !SystemAPI.HasComponent<LocalTransform>(targetOveride.ValueRO.targetEntity))
+        //    {
+        //        targetOveride.ValueRW.targetEntity = Entity.Null;
+        //    }
+        //}
+    }
+}
+[BurstCompile]
+partial struct ResetTargetOverrideJob : IJobEntity
+{
+    [ReadOnly] public ComponentLookup<LocalTransform> localTransformComponentLookup;
+    [ReadOnly] public EntityStorageInfoLookup entityStorageInfoLookup;
+
+    public void Execute(ref TargetOveride targetOveride)
+    {
+        if (targetOveride.targetEntity == Entity.Null) return;
+        if (!entityStorageInfoLookup.Exists(targetOveride.targetEntity) || !localTransformComponentLookup.HasComponent(targetOveride.targetEntity))
+        {
+            targetOveride.targetEntity = Entity.Null;
         }
-        foreach (RefRW<TargetOveride> targetOveride in SystemAPI.Query<RefRW<TargetOveride>>())
+    }
+}
+[BurstCompile]
+partial struct ResetTargetJob : IJobEntity
+{
+    [ReadOnly] public ComponentLookup<LocalTransform> localTransformComponentLookup;
+    [ReadOnly] public EntityStorageInfoLookup entityStorageInfoLookup;
+
+    public void Execute(ref Target target)
+    {
+        if (target.targetEntity == Entity.Null) return;
+        if (!entityStorageInfoLookup.Exists(target.targetEntity) || !localTransformComponentLookup.HasComponent(target.targetEntity))
         {
-            if (targetOveride.ValueRO.targetEntity == Entity.Null) continue;
-            if (!SystemAPI.Exists(targetOveride.ValueRO.targetEntity) || !SystemAPI.HasComponent<LocalTransform>(targetOveride.ValueRO.targetEntity))
-            {
-                targetOveride.ValueRW.targetEntity = Entity.Null;
-            }
+            target.targetEntity = Entity.Null;
         }
     }
 }

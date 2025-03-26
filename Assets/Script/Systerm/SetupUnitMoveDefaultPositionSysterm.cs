@@ -19,7 +19,6 @@ partial struct SetupUnitMoveDefaultPositionSysterm : ISystem
             unitMover.ValueRW.movePosition = localTransform.ValueRO.Position;
             entityCommandBuffer.SetComponentEnabled<SetupUnitMoveDefaultPosition>(entity, false);
             //entityCommandBuffer.RemoveComponent<SetupUnitMoveDefaultPosition>(entity);
-            UnityEngine.Debug.Log("Setup disable");
         }
     }
 }

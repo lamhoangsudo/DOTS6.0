@@ -8,18 +8,34 @@ partial struct ResetEventSysterm : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach(RefRW<Select> select in SystemAPI.Query<RefRW<Select>>().WithPresent<Select>())
-        {
-            select.ValueRW.OnDeSelect = false;
-            select.ValueRW.OnSelect = false;
-        }
-        foreach (RefRW<Health> health in SystemAPI.Query<RefRW<Health>>())
-        {
-            health.ValueRW.OnValueHealthChange = false;
-        }
-        foreach (RefRW<ShootAttack> shootAttack in SystemAPI.Query<RefRW<ShootAttack>>())
-        {
-            shootAttack.ValueRW.OnShoot.trigger = false;
-        }
+        new ResetSelectEventJob().ScheduleParallel();
+        new ResetHealthEventJob().ScheduleParallel();
+        new ResetShootAttackEventJob().ScheduleParallel();
+    }
+}
+[BurstCompile]
+partial struct ResetShootAttackEventJob : IJobEntity
+{
+    public void Execute(ref ShootAttack shootAttack)
+    {
+        shootAttack.OnShoot.trigger = false;
+    }
+}
+[BurstCompile]
+partial struct ResetHealthEventJob : IJobEntity
+{
+    public void Execute(ref Health health)
+    {
+        health.OnValueHealthChange = false;
+    }
+}
+[BurstCompile]
+[WithPresent(typeof(Select))]
+partial struct ResetSelectEventJob : IJobEntity
+{
+    public void Execute(ref Select select)
+    {
+        select.OnDeSelect = false;
+        select.OnSelect = false;
     }
 }
