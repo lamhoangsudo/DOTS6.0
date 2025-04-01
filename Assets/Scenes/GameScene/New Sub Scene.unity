@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 477287a515964124688036a148116c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soldierIdlel: {fileID: 11400000, guid: 63246a709c3409d45a691bfb14a23aba, type: 2}
+  listAnimationData: {fileID: 11400000, guid: 4d9d48982d3a5024da9ee0e98a3b8bfb, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

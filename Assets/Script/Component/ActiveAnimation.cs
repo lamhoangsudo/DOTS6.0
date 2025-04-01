@@ -5,5 +5,5 @@ public struct ActiveAnimation : IComponentData
 {
     public int frame;
     public float frameTimer;
-    public BlobAssetReference<AnimationData> aimationDataBlobAssetRef;
+    public AnimationDataSO.AnimationType activeAnimationIndex;
 }

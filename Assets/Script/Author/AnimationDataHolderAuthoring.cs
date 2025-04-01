@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Rendering;
@@ -6,7 +7,7 @@ using UnityEngine.Rendering;
 
 public class AnimationDataHolderAuthoring : MonoBehaviour
 {
-    [SerializeField] private AnimationDataSO soldierIdlel;
+    [SerializeField] private AnimationDataListSO listAnimationData;
     public class AnimationDataHolderAuthoringBaker : Baker<AnimationDataHolderAuthoring>
     {
         public override void Bake(AnimationDataHolderAuthoring authoring)
@@ -17,22 +18,28 @@ public class AnimationDataHolderAuthoring : MonoBehaviour
             //
             BlobBuilder blobBuilder = new(Allocator.Temp);
             //error work with copy not actually data
-            ref AnimationData animationData = ref blobBuilder.ConstructRoot<AnimationData>();
-            animationData.frameTimeMax = authoring.soldierIdlel.frameTimerMax;
-            animationData.frameMax = authoring.soldierIdlel.frames.Length;
-            BlobBuilderArray<BatchMeshID> blobBuilderArray = blobBuilder.Allocate<BatchMeshID>(ref animationData.batchMeshIDBlobArray, authoring.soldierIdlel.frames.Length);
-            for(int i = 0; i < authoring.soldierIdlel.frames.Length; i++)
+            ref BlobArray<AnimationData> animationDataBlobArray = ref blobBuilder.ConstructRoot<BlobArray<AnimationData>>();
+            BlobBuilderArray<AnimationData> blobBuilderAnimationDataArray = blobBuilder.Allocate<AnimationData>(ref animationDataBlobArray, System.Enum.GetValues(typeof(AnimationDataSO.AnimationType)).Length);
+            //
+            foreach (AnimationDataSO.AnimationType animationType in System.Enum.GetValues(typeof(AnimationDataSO.AnimationType)))
             {
-                BatchMeshID batchMeshID = new();
-                batchMeshID = entitiesGraphicsSystem.RegisterMesh(authoring.soldierIdlel.frames[i]);
-                blobBuilderArray[i] = batchMeshID;
+                AnimationDataSO animationDataSO = authoring.listAnimationData.GetAnimationDataSO(animationType);
+                blobBuilderAnimationDataArray[(int)animationType].frameTimeMax = animationDataSO.frameTimerMax;
+                blobBuilderAnimationDataArray[(int)animationType].frameMax = animationDataSO.frames.Length;
+                BlobBuilderArray<BatchMeshID> blobBuilderMeshArray = blobBuilder.Allocate<BatchMeshID>(ref blobBuilderAnimationDataArray[(int)animationType].batchMeshIDBlobArray, animationDataSO.frames.Length);
+                for (int j = 0; j < animationDataSO.frames.Length; j++)
+                {
+                    BatchMeshID batchMeshID = new();
+                    batchMeshID = entitiesGraphicsSystem.RegisterMesh(animationDataSO.frames[j]);
+                    blobBuilderMeshArray[j] = batchMeshID;
+                }
             }
             //
-            animationDataHolder.soliderIdle = blobBuilder.CreateBlobAssetReference<AnimationData>(Allocator.Persistent);
+            animationDataHolder.animationDataBlobArray = blobBuilder.CreateBlobAssetReference<BlobArray<AnimationData>>(Allocator.Persistent);
             //error memory leak
             blobBuilder.Dispose();
             //error unallocated memory
-            AddBlobAsset(ref animationDataHolder.soliderIdle, out _);
+            AddBlobAsset(ref animationDataHolder.animationDataBlobArray, out _);
             AddComponent(entity, animationDataHolder);
         }
     }

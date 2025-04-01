@@ -1,6 +1,7 @@
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Rendering;
+using UnityEngine;
 
 partial struct ActiveAnimationSysterm : ISystem
 {
@@ -15,16 +16,21 @@ partial struct ActiveAnimationSysterm : ISystem
         AnimationDataHolder animationDataHolder = SystemAPI.GetSingleton<AnimationDataHolder>();
         foreach ((RefRW<ActiveAnimation> activeAnimation, RefRW<MaterialMeshInfo> materialMeshInfo) in SystemAPI.Query<RefRW<ActiveAnimation>, RefRW<MaterialMeshInfo>>())
         {
-            if(!activeAnimation.ValueRO.aimationDataBlobAssetRef.IsCreated)
+            if (Input.GetKeyDown(KeyCode.T))
             {
-                activeAnimation.ValueRW.aimationDataBlobAssetRef = animationDataHolder.soliderIdle;
+                activeAnimation.ValueRW.activeAnimationIndex = AnimationDataSO.AnimationType.SoldierIdel;
             }
-            activeAnimation.ValueRW.frameTimer += SystemAPI.Time.DeltaTime;
-            if(activeAnimation.ValueRO.frameTimer >= activeAnimation.ValueRO.aimationDataBlobAssetRef.Value.frameTimeMax)
+            if (Input.GetKeyUp(KeyCode.Y))
             {
-                activeAnimation.ValueRW.frameTimer -= activeAnimation.ValueRO.aimationDataBlobAssetRef.Value.frameTimeMax;
-                activeAnimation.ValueRW.frame = (activeAnimation.ValueRO.frame + 1) % activeAnimation.ValueRO.aimationDataBlobAssetRef.Value.frameMax;
-                materialMeshInfo.ValueRW.MeshID = activeAnimation.ValueRO.aimationDataBlobAssetRef.Value.batchMeshIDBlobArray[activeAnimation.ValueRO.frame];
+                activeAnimation.ValueRW.activeAnimationIndex = AnimationDataSO.AnimationType.SoldierWalk;
+            }
+            ref AnimationData animationData = ref animationDataHolder.animationDataBlobArray.Value[(int)activeAnimation.ValueRO.activeAnimationIndex];
+            activeAnimation.ValueRW.frameTimer += SystemAPI.Time.DeltaTime;
+            if(activeAnimation.ValueRO.frameTimer >= animationData.frameTimeMax)
+            {
+                activeAnimation.ValueRW.frameTimer -= animationData.frameTimeMax;
+                activeAnimation.ValueRW.frame = (activeAnimation.ValueRO.frame + 1) % animationData.frameMax;
+                materialMeshInfo.ValueRW.MeshID = animationData.batchMeshIDBlobArray[activeAnimation.ValueRO.frame];
             }
         }
     }
