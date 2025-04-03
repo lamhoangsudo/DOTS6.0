@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ActiveAnimationAuthoring : MonoBehaviour
 {
+    [SerializeField] private AnimationDataSO.AnimationType nextAnimationType;
     public class ActiveAnimationAuthoringBaker : Baker<ActiveAnimationAuthoring>
     {
         public override void Bake(ActiveAnimationAuthoring authoring)
@@ -10,7 +11,7 @@ public class ActiveAnimationAuthoring : MonoBehaviour
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new ActiveAnimation
             {
-
+                nextAnimationType = authoring.nextAnimationType,
             });
         }
     }

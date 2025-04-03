@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74af082224c85ba4d8c102f11406bfc9, type: 3}
-  m_Name: Soldier_Idle 1
+  m_Name: Zombie_Idle
   m_EditorClassIdentifier: 
-  animationType: 1
+  animationType: 3
   frames:
-  - {fileID: 4300000, guid: 3e67c8e712f2b5040aaaeb8eb2492345, type: 2}
-  - {fileID: 4300000, guid: 94ffd3753a934114d9fb144c7cb75e89, type: 2}
+  - {fileID: 4300000, guid: 704f5ea696ef75944b30d5c8ec37f428, type: 2}
+  - {fileID: 4300000, guid: df8fb447f0ed85645b85d4f14274d82c, type: 2}
+  - {fileID: 4300000, guid: 57e97f108cef90448a9bd096ce862f2b, type: 2}
+  - {fileID: 4300000, guid: 4661aaf9b1976d141aa8fe113d423529, type: 2}
   frameTimerMax: 0.5

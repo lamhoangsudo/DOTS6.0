@@ -11,16 +11,18 @@ public partial struct UnitMoverJob : IJobEntity
         (
         ref PhysicsVelocity velocity,
         ref LocalTransform localTransform,
-        in UnitMover unitMover
+        ref UnitMover unitMover
         )
     {
         float3 dir = unitMover.movePosition - localTransform.Position;
         if(math.lengthsq(dir) < UnitMoveSysterm.REACH_TARGET_DISTANCE_SQ)
         {
+            unitMover.isMoving = false;
             velocity.Linear = float3.zero;
             velocity.Angular = float3.zero;
             return;
         }
+        unitMover.isMoving = true;
         dir = math.normalize(dir);
         localTransform.Rotation = math.slerp(localTransform.Rotation, quaternion.LookRotation(dir, math.up()), deltaTime * unitMover.rotationSpeed);
         velocity.Linear = dir * unitMover.moveSpeed;

@@ -5,5 +5,6 @@ public struct ActiveAnimation : IComponentData
 {
     public int frame;
     public float frameTimer;
-    public AnimationDataSO.AnimationType activeAnimationIndex;
+    public AnimationDataSO.AnimationType activeAnimationType;
+    public AnimationDataSO.AnimationType nextAnimationType;
 }
