@@ -23,6 +23,11 @@ partial struct ActiveAnimationSysterm : ISystem
                 activeAnimation.ValueRW.frameTimer -= animationData.frameTimeMax;
                 activeAnimation.ValueRW.frame = (activeAnimation.ValueRO.frame + 1) % animationData.frameMax;
                 materialMeshInfo.ValueRW.MeshID = animationData.batchMeshIDBlobArray[activeAnimation.ValueRO.frame];
+                if (activeAnimation.ValueRO.frame == 0)
+                {
+                    if(activeAnimation.ValueRO.activeAnimationType == AnimationDataSO.AnimationType.SoldierShoot) activeAnimation.ValueRW.activeAnimationType = AnimationDataSO.AnimationType.None;
+                    if(activeAnimation.ValueRO.activeAnimationType == AnimationDataSO.AnimationType.ZombieMeleeAttack) activeAnimation.ValueRW.activeAnimationType = AnimationDataSO.AnimationType.None;
+                }
             }
         }
     }

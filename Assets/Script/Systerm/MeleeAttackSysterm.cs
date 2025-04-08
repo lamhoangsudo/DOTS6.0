@@ -71,6 +71,7 @@ partial struct MeleeAttackSysterm : ISystem
                 targetHealth.ValueRW.health -= meleeAttack.ValueRO.attackDamage;
                 targetHealth.ValueRW.OnValueHealthChange = true;
                 meleeAttack.ValueRW.timer = meleeAttack.ValueRO.attackTimerMax;
+                meleeAttack.ValueRW.onAttack = true;
             }
         }
     }

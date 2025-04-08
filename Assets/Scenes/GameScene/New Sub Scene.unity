@@ -167,14 +167,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3277895868710312941, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
-      propertyPath: soldierIdel
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3277895868710312941, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
-      propertyPath: soldierWalk
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 8755289208574193329, guid: 44fc8b9f070108f4e850cb2a8aa65f45, type: 3}
       propertyPath: m_Name
       value: SoldierUnit

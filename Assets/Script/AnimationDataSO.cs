@@ -10,6 +10,9 @@ public class AnimationDataSO : ScriptableObject
         SoldierWalk = 2,
         ZombieIdel = 3,
         ZombieWalk = 4,
+        SoldierAim = 5,
+        SoldierShoot = 6,
+        ZombieMeleeAttack = 7,
     }
     public AnimationType animationType;
     public Mesh[] frames;

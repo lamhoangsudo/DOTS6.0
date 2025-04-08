@@ -6,4 +6,5 @@ public struct MeleeAttack : IComponentData
     public float timer;
     public float attackTimerMax;
     public float colliderSize;
+    public bool onAttack;
 }

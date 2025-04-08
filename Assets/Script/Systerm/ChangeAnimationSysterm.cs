@@ -10,6 +10,10 @@ partial struct ChangeAnimationSysterm : ISystem
         AnimationDataHolder animationDataHolder = SystemAPI.GetSingleton<AnimationDataHolder>();
         foreach ((RefRW<ActiveAnimation> activeAnimation, RefRW<MaterialMeshInfo> materialMeshInfo) in SystemAPI.Query<RefRW<ActiveAnimation>, RefRW<MaterialMeshInfo>>())
         {
+            if(activeAnimation.ValueRO.activeAnimationType == AnimationDataSO.AnimationType.SoldierShoot || activeAnimation.ValueRO.activeAnimationType == AnimationDataSO.AnimationType.ZombieMeleeAttack)
+            {
+                continue;
+            }
             if(activeAnimation.ValueRO.activeAnimationType != activeAnimation.ValueRO.nextAnimationType)
             {
                 //swapping animation

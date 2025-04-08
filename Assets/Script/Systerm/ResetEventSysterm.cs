@@ -11,6 +11,7 @@ partial struct ResetEventSysterm : ISystem
         new ResetSelectEventJob().ScheduleParallel();
         new ResetHealthEventJob().ScheduleParallel();
         new ResetShootAttackEventJob().ScheduleParallel();
+        new ResetMeleeAttackEventJob().ScheduleParallel();
     }
 }
 [BurstCompile]
@@ -37,5 +38,13 @@ partial struct ResetSelectEventJob : IJobEntity
     {
         select.OnDeSelect = false;
         select.OnSelect = false;
+    }
+}
+[BurstCompile]
+partial struct ResetMeleeAttackEventJob : IJobEntity
+{
+    public void Execute(ref MeleeAttack meleeAttack)
+    {
+        meleeAttack.onAttack = false;
     }
 }

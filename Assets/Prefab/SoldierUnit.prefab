@@ -162,12 +162,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5140766239563182812, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: soldierAim
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5140766239563182812, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: soldierIdel
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5140766239563182812, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: soldierWalk
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5140766239563182812, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: soldierShoot
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6526193721174505454, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: m_IsTrigger
