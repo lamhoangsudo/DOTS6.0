@@ -5,7 +5,7 @@ public class AnimationDataSO : ScriptableObject
 {
     public enum AnimationType
     {
-        None = 0,
+        SoldierNone = 0,
         SoldierIdel = 1,
         SoldierWalk = 2,
         ZombieIdel = 3,
@@ -13,6 +13,7 @@ public class AnimationDataSO : ScriptableObject
         SoldierAim = 5,
         SoldierShoot = 6,
         ZombieMeleeAttack = 7,
+        ZombieNone = 8,
     }
     public AnimationType animationType;
     public Mesh[] frames;

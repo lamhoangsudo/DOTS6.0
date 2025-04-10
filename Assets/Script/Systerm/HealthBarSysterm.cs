@@ -56,7 +56,8 @@ partial struct HealthBarSysterm : ISystem
         //}
     }
 }
-partial struct HealthBarjob : IJobEntity
+[BurstCompile]
+public partial struct HealthBarjob : IJobEntity
 {
     [ReadOnly] public ComponentLookup<LocalTransform> componentLookupLocalTransform;
     [ReadOnly] public ComponentLookup<Health> componentLookupHealth;
