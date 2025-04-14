@@ -5,6 +5,11 @@ using Unity.Rendering;
 partial struct ChangeAnimationSysterm : ISystem
 {
     [BurstCompile]
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<AnimationDataHolder>();
+    }
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         /*
@@ -25,7 +30,7 @@ partial struct ChangeAnimationSysterm : ISystem
                 //change mesh
                 //set mesh for first frame
                 ref AnimationData animationData = ref animationDataHolder.animationDataBlobArray.Value[(int)activeAnimation.ValueRO.activeAnimationType];
-                materialMeshInfo.ValueRW.MeshID = animationData.batchMeshIDBlobArray[0];
+                materialMeshInfo.ValueRW.MeshID = animationData.intMeshIDBlobArray[0];
             }
         }
         */
@@ -59,7 +64,7 @@ public partial struct ChangeAnimationJob : IJobEntity
             //change mesh
             //set mesh for first frame
             ref AnimationData animationData = ref animationDataHolder.animationDataBlobArray.Value[(int)activeAnimation.activeAnimationType];
-            materialMeshInfo.MeshID = animationData.batchMeshIDBlobArray[0];
+            materialMeshInfo.Mesh = animationData.intMeshIDBlobArray[0];
         }
     }
 }

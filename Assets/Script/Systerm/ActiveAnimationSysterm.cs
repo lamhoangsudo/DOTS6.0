@@ -37,7 +37,7 @@ public partial struct ActiveAnimationJob : IJobEntity
         {
             activeAnimation.frameTimer -= animationData.frameTimeMax;
             activeAnimation.frame = (activeAnimation.frame + 1) % animationData.frameMax;
-            materialMeshInfo.MeshID = animationData.batchMeshIDBlobArray[activeAnimation.frame];
+            materialMeshInfo.Mesh = animationData.intMeshIDBlobArray[activeAnimation.frame];
             if (activeAnimation.frame == 0)
             {
                 if (activeAnimation.activeAnimationType == AnimationDataSO.AnimationType.SoldierShoot) activeAnimation.activeAnimationType = AnimationDataSO.AnimationType.SoldierNone;

@@ -9,5 +9,5 @@ public struct AnimationData
 {
     public float frameTimeMax;
     public int frameMax;
-    public BlobArray<BatchMeshID> batchMeshIDBlobArray;
+    public BlobArray<int> intMeshIDBlobArray;
 }
