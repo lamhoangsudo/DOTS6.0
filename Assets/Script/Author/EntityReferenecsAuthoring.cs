@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EntityReferenecsAuthoring : MonoBehaviour
 {
-    [SerializeField] private GameObject bullet, zombie, shootLight;
+    [SerializeField] private GameObject bullet, zombie, shootLight, soldier, scout;
     public class EntityReferenecsAuthoringBaker : Baker<EntityReferenecsAuthoring>
     {
         public override void Bake(EntityReferenecsAuthoring authoring)
@@ -14,6 +14,8 @@ public class EntityReferenecsAuthoring : MonoBehaviour
                 bulletEntity = GetEntity(authoring.bullet, TransformUsageFlags.Dynamic),
                 zombie = GetEntity(authoring.zombie, TransformUsageFlags.Dynamic),
                 shootAttackLight = GetEntity(authoring.shootLight, TransformUsageFlags.Dynamic),
+                soldier = GetEntity(authoring.soldier, TransformUsageFlags.Dynamic),
+                scout = GetEntity(authoring.scout, TransformUsageFlags.Dynamic),
             });
         }
     }

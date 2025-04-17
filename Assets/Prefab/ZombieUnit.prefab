@@ -51,6 +51,10 @@ PrefabInstance:
       propertyPath: targetFaction
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -2826450517609630069, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: faction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1283440409675301185, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -102,6 +106,10 @@ PrefabInstance:
     - target: {fileID: 7041581727331613163, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: lostTargetDistance
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7707019264607143618, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
+      propertyPath: unitTypeSO
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7767491090691323197, guid: 3ee6589fae9097746b80279e20ba9ad4, type: 3}
       propertyPath: m_LocalPosition.x

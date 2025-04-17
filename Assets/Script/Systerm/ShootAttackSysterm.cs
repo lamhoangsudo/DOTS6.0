@@ -51,12 +51,47 @@ partial struct ShootAttackSysterm : ISystem
             {
                 continue;
             }
+        }
+        foreach ((
+            RefRW<LocalTransform> localTransform,
+            RefRW<ShootAttack> shootAttack,
+            RefRO<Target> target,
+            Entity unitEntity)
+            in SystemAPI.Query<
+                RefRW<LocalTransform>,
+                RefRW<ShootAttack>,
+                RefRO<Target>>().WithEntityAccess())
+        {
+
+            if (target.ValueRO.targetEntity == Entity.Null)
+            {
+                continue;
+            }
+
+            RefRO<LocalTransform> targetLocalTransform = SystemAPI.GetComponentRO<LocalTransform>(target.ValueRO.targetEntity);
+            float distance = math.distance(localTransform.ValueRO.Position, targetLocalTransform.ValueRO.Position);
+            if (distance > shootAttack.ValueRO.attackDistance)
+            {
+                continue;
+            }
+            if (SystemAPI.HasComponent<MoveOveride>(unitEntity) &&  SystemAPI.IsComponentEnabled<MoveOveride>(unitEntity))
+            {
+                continue;
+            }
+            shootAttack.ValueRW.timer -= SystemAPI.Time.DeltaTime;
+            if (shootAttack.ValueRO.timer > 0f)
+            {
+                continue;
+            }
             shootAttack.ValueRW.timer = shootAttack.ValueRO.timerMax;
 
-            RefRW<TargetOveride> enemyTargetOveride = SystemAPI.GetComponentRW<TargetOveride>(target.ValueRO.targetEntity);
-            if(enemyTargetOveride.ValueRO.targetEntity == Entity.Null)
+            if (SystemAPI.HasComponent<TargetOveride>(target.ValueRO.targetEntity))
             {
-                enemyTargetOveride.ValueRW.targetEntity = unitEntity;
+                RefRW<TargetOveride> enemyTargetOveride = SystemAPI.GetComponentRW<TargetOveride>(target.ValueRO.targetEntity);
+                if (enemyTargetOveride.ValueRO.targetEntity == Entity.Null)
+                {
+                    enemyTargetOveride.ValueRW.targetEntity = unitEntity;
+                }
             }
 
             Entity bulletEntity = state.EntityManager.Instantiate(entitiesReferences.bulletEntity);

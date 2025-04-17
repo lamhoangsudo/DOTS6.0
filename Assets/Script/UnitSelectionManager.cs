@@ -78,15 +78,14 @@ public class UnitSelectionManager : MonoBehaviour
                         //...00000001
                         //...00001000
                         //only affects layer 6
-                        CollidesWith = 1u << GameAssets.UNIT_LAYER,
+                        CollidesWith = 1u << GameAssets.UNIT_LAYER | 1u << GameAssets.BUILDINGS_LAYER,
                         GroupIndex = 0,
                     }
                 };
                 if(collisionWorld.CastRay(raycastInput, out Unity.Physics.RaycastHit raycastHit))
                 {
-                    if(entityManager.HasComponent<Unit>(raycastHit.Entity) 
-                        && entityManager.HasComponent<Select>(raycastHit.Entity)) {
-                        //hit a unit
+                    if(entityManager.HasComponent<Select>(raycastHit.Entity)) {
+                        //hit a selectable entity
                         entityManager.SetComponentEnabled<Select>(raycastHit.Entity, true);
                         Select select = entityManager.GetComponentData<Select>(raycastHit.Entity);
                         //select.OnSelect = true;
@@ -145,17 +144,17 @@ public class UnitSelectionManager : MonoBehaviour
                     //...00000001
                     //...00001000
                     //only affects layer 6
-                    CollidesWith = 1u << GameAssets.UNIT_LAYER,
+                    CollidesWith = 1u << GameAssets.UNIT_LAYER | 1u << GameAssets.BUILDINGS_LAYER,
                     GroupIndex = 0,
                 }
             };
             if (collisionWorld.CastRay(raycastInput, out Unity.Physics.RaycastHit raycastHit))
             {
-                if (entityManager.HasComponent<Unit>(raycastHit.Entity))
+                if (entityManager.HasComponent<Faction>(raycastHit.Entity))
                 {
                     //hit a unit
-                    Unit targetPoint = entityManager.GetComponentData<Unit>(raycastHit.Entity);
-                    if (targetPoint.faction == Faction.Zombie)
+                    Faction factionTarget = entityManager.GetComponentData<Faction>(raycastHit.Entity);
+                    if (factionTarget.factionType == FactionType.Zombie)
                     {
                         isAttackingSingleTarget = true;
                         EntityQuery entityQuerySelect = new EntityQueryBuilder(Allocator.Temp).WithAll<Select>().WithPresent<TargetOveride>().Build(entityManager);
@@ -194,6 +193,18 @@ public class UnitSelectionManager : MonoBehaviour
                 entityQueryMoveOveride.CopyFromComponentDataArray<MoveOveride>(unitMoverOverides);
                 entityQueryMoveOveride.CopyFromComponentDataArray<TargetOveride>(unitTargetOverides);
             }
+
+            //Handle barracks rally point
+            EntityQuery entityQueryBarracksRallyPoint = new EntityQueryBuilder(Allocator.Temp).WithAll<Select, BuildingBarracks, LocalTransform>().Build(entityManager);
+            NativeArray<BuildingBarracks> buildingBarracks = entityQueryBarracksRallyPoint.ToComponentDataArray<BuildingBarracks>(Allocator.Temp);
+            NativeArray<LocalTransform> localTransforms = entityQueryBarracksRallyPoint.ToComponentDataArray<LocalTransform>(Allocator.Temp);
+            for (int i = 0; i < buildingBarracks.Length; i++)
+            {
+                BuildingBarracks buildingBarrack = buildingBarracks[i];
+                buildingBarrack.rallyPositionOffset = (float3)MouseWorldPositionManager.mouseWorldPositionManager.GetMousePosition() - localTransforms[i].Position;
+                buildingBarracks[i] = buildingBarrack;
+            }
+            entityQueryBarracksRallyPoint.CopyFromComponentDataArray<BuildingBarracks>(buildingBarracks);
         }
     }
     public Rect GetSelectAreaRect()

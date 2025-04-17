@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 8381202155294415140}
   - component: {fileID: 2775530156440188046}
   - component: {fileID: 5140766239563182812}
+  - component: {fileID: -2826450517609630069}
+  - component: {fileID: 7707019264607143618}
   m_Layer: 6
   m_Name: BaseUnit
   m_TagString: Untagged
@@ -239,6 +241,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soldierWalk: 0
   soldierIdel: 0
+  soldierAim: 0
+  soldierShoot: 0
+  meleeAttack: 0
+--- !u!114 &-2826450517609630069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417453425115334528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07c697676a7b2645aad213b4f373d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faction: 0
+--- !u!114 &7707019264607143618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417453425115334528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3020a70ae8eb3a842942b9ffb2d138e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitTypeSO: 0
 --- !u!1 &2287575567465549573
 GameObject:
   m_ObjectHideFlags: 0

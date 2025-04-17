@@ -6,4 +6,6 @@ public struct ZombieSpawn : IComponentData
     public float timerMax;
     public float zombieRandomWalkingDistanceMin;
     public float zombieRandomWalkingDistanceMax;
+    public int nearbyZombieCountMax;
+    public float nearbyZombieDistance;
 }

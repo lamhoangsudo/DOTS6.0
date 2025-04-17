@@ -4,7 +4,7 @@ using UnityEngine;
 public class FindTargetAuthoring : MonoBehaviour
 {
     [SerializeField] private float findingRange;
-    [SerializeField] private Faction targetFaction;
+    [SerializeField] private FactionType targetFaction;
     [SerializeField] private float timerMax;
     public class FindTargetAuthoringBaker : Baker<FindTargetAuthoring>
     {

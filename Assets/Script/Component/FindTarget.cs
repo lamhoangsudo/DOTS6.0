@@ -3,7 +3,7 @@ using Unity.Entities;
 public struct FindTarget : IComponentData
 {
     public float findingRange;
-    public Faction targetFaction;
+    public FactionType targetFaction;
     public float timer;
     public float timerMax;
 }

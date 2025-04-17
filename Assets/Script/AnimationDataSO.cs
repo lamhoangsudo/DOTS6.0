@@ -14,8 +14,20 @@ public class AnimationDataSO : ScriptableObject
         SoldierShoot = 6,
         ZombieMeleeAttack = 7,
         ZombieNone = 8,
+        ScoutWalk = 9,
+        ScoutIdel = 10,
+        ScoutAim = 11,
+        ScoutShoot = 12,
     }
     public AnimationType animationType;
     public Mesh[] frames;
     public float frameTimerMax;
+    public static bool IsAnimationUninterruptible(AnimationType animationType)
+    {
+        return animationType switch
+        {
+            AnimationType.SoldierShoot or AnimationType.ScoutShoot or AnimationType.ZombieMeleeAttack => true,
+            _ => false,
+        };
+    }
 }

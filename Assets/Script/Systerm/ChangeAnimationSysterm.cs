@@ -50,10 +50,7 @@ public partial struct ChangeAnimationJob : IJobEntity
         ref ActiveAnimation activeAnimation,
         ref MaterialMeshInfo materialMeshInfo)
     {
-        if (activeAnimation.activeAnimationType == AnimationDataSO.AnimationType.SoldierShoot || activeAnimation.activeAnimationType == AnimationDataSO.AnimationType.ZombieMeleeAttack)
-        {
-            return;
-        }
+        if (AnimationDataSO.IsAnimationUninterruptible(activeAnimation.activeAnimationType)) return;
         if (activeAnimation.activeAnimationType != activeAnimation.nextAnimationType)
         {
             //swapping animation
