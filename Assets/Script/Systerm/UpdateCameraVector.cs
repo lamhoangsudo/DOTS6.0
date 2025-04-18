@@ -2,6 +2,7 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+[UpdateInGroup(typeof(LateSimulationSystemGroup))]
 [UpdateBefore(typeof(HealthBarSysterm))]
 partial class UpdateCameraVector : SystemBase
 {

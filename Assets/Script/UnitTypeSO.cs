@@ -13,6 +13,7 @@ public class UnitTypeSO : ScriptableObject
     }
     public UnitType unitType;
     public float progress;
+    public Sprite sprite;
     public Entity GetPrefabEntity(EntityReferenecs entityReferenecs)
     {
         return unitType switch

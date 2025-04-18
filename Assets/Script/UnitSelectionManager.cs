@@ -8,6 +8,7 @@ using Unity.Physics;
 using Unity.Transforms;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UnitSelectionManager : MonoBehaviour
 {
@@ -15,12 +16,17 @@ public class UnitSelectionManager : MonoBehaviour
     public event EventHandler OnSelectAreaStart;
     public event EventHandler OnSelectAreaEnd;
     private Vector2 selectStartMousePosition;
+    public event EventHandler OnSelectChange;
     private void Awake()
     {
         Instance = this;
     }
     private void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             selectStartMousePosition = Input.mousePosition;
@@ -82,9 +88,10 @@ public class UnitSelectionManager : MonoBehaviour
                         GroupIndex = 0,
                     }
                 };
-                if(collisionWorld.CastRay(raycastInput, out Unity.Physics.RaycastHit raycastHit))
+                if (collisionWorld.CastRay(raycastInput, out Unity.Physics.RaycastHit raycastHit))
                 {
-                    if(entityManager.HasComponent<Select>(raycastHit.Entity)) {
+                    if (entityManager.HasComponent<Select>(raycastHit.Entity))
+                    {
                         //hit a selectable entity
                         entityManager.SetComponentEnabled<Select>(raycastHit.Entity, true);
                         Select select = entityManager.GetComponentData<Select>(raycastHit.Entity);
@@ -121,6 +128,7 @@ public class UnitSelectionManager : MonoBehaviour
                 //entityQueryMoveOveride.CopyFromComponentDataArray<Select>(selectArray);
             }
             OnSelectAreaEnd?.Invoke(this, EventArgs.Empty);
+            OnSelectChange?.Invoke(this, EventArgs.Empty);
         }
         if (Input.GetMouseButtonDown(1))
         {
@@ -247,7 +255,7 @@ public class UnitSelectionManager : MonoBehaviour
                 float3 ringPosition = targetPosition + ringVector;
                 positionArray[positionIndex] = ringPosition;
                 positionIndex++;
-                if(positionIndex >= positionCount)
+                if (positionIndex >= positionCount)
                 {
                     break;
                 }

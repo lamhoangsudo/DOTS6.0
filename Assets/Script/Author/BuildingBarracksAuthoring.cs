@@ -16,25 +16,15 @@ public class BuildingBarracksAuthoring : MonoBehaviour
                 maxProgress = authoring.maxProgress,
                 rallyPositionOffset = authoring.rallyPositionOffset,
             });
-            DynamicBuffer<SpawnUnitType> spawnUnitTypes = AddBuffer<SpawnUnitType>(entity);
-            spawnUnitTypes.Add(new SpawnUnitType
-            {
-                unitType = UnitTypeSO.UnitType.Soldier,
-            });
-            spawnUnitTypes.Add(new SpawnUnitType
-            {
-                unitType = UnitTypeSO.UnitType.Scout,
-            }); 
-            spawnUnitTypes.Add(new SpawnUnitType
-            {
-                unitType = UnitTypeSO.UnitType.Soldier,
-            });
-            spawnUnitTypes.Add(new SpawnUnitType
-            {
-                unitType = UnitTypeSO.UnitType.Scout,
-            });
+            AddComponent(entity, new BuildingBarracksUnitEnqueue());
+            SetComponentEnabled<BuildingBarracksUnitEnqueue>(entity, false);
+            AddBuffer<SpawnUnitType>(entity);
         }
     }
+}
+public struct BuildingBarracksUnitEnqueue : IComponentData, IEnableableComponent
+{
+    public UnitTypeSO.UnitType unitType;
 }
 public struct BuildingBarracks : IComponentData
 {
@@ -42,6 +32,7 @@ public struct BuildingBarracks : IComponentData
     public float maxProgress;
     public UnitTypeSO.UnitType activeUnitType;
     public float3 rallyPositionOffset;
+    public bool onUnitQueueChanged;
 }
 //the number is fixed to what we need, lager causes performance issues
 [InternalBufferCapacity(10)]
