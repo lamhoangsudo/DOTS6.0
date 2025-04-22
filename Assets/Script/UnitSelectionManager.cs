@@ -27,6 +27,10 @@ public class UnitSelectionManager : MonoBehaviour
         {
             return;
         }
+        if(BuildingPlacementManager.buildingPlacementManager.GetActiveBuildingTypeSO().buildingType != BuildingTypeSO.BuildingType.None)
+        {
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             selectStartMousePosition = Input.mousePosition;

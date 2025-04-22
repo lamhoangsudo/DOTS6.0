@@ -9,4 +9,5 @@ public class GameAssets : MonoBehaviour
         if (instance == null) { instance = this; }
     }
     public UnitTypeListSO unitTypeListSO;
+    public BuildingTypeListSO buildingTypeListSO;
 }

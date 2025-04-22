@@ -6,6 +6,7 @@ using UnityEngine;
 public class BuildingTypeListSO : ScriptableObject
 {
     public List<BuildingTypeSO> buildingTypeList;
+    public BuildingTypeSO defaultBuildingTypeSO;
     public BuildingTypeSO GetBuildingTypeSO(BuildingTypeSO.BuildingType buildingType)
     {
         foreach (BuildingTypeSO buildingDataSO in buildingTypeList)
