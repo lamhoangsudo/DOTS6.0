@@ -8,24 +8,40 @@ using Unity.Jobs;
 partial struct ResetEventSysterm : ISystem
 {
     private NativeArray<JobHandle> jobHandles;
+    private NativeList<Entity> onUnitQueueChangedEntityList;
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         jobHandles = new NativeArray<JobHandle>(5, Allocator.Persistent);
+        onUnitQueueChangedEntityList = new(Allocator.Persistent);
     }
     public void OnUpdate(ref SystemState state)
     {
+        if(SystemAPI.HasSingleton<BuildingHQ>())
+        {
+            Health health = SystemAPI.GetComponent<Health>(SystemAPI.GetSingletonEntity<BuildingHQ>());
+            if(health.OnDead)
+            {
+                DOTSEventsManager.Instance.TriggerOnHQDead();
+            }
+        }
         jobHandles[0] = new ResetSelectEventJob().ScheduleParallel(state.Dependency);
         jobHandles[1] = new ResetHealthEventJob().ScheduleParallel(state.Dependency);
         jobHandles[2] = new ResetShootAttackEventJob().ScheduleParallel(state.Dependency);
         jobHandles[3] = new ResetMeleeAttackEventJob().ScheduleParallel(state.Dependency);
-        NativeList<Entity> onUnitQueueChangedEntityList = new(Allocator.TempJob);
+        onUnitQueueChangedEntityList.Clear();
         new ResetBuildingBarracksEventJob() 
         {
             onUnitQueueChangedEntityList = onUnitQueueChangedEntityList.AsParallelWriter(),
         }.ScheduleParallel(state.Dependency).Complete();
         DOTSEventsManager.Instance.TriggerOnBarracksUnitQueueChanged(onUnitQueueChangedEntityList);
         state.Dependency = JobHandle.CombineDependencies(jobHandles);
+    }
+    [BurstCompile]
+    public void OnDestroy(ref SystemState state)
+    {
+        jobHandles.Dispose();
+        onUnitQueueChangedEntityList.Dispose();
     }
 }
 [BurstCompile]
@@ -42,6 +58,7 @@ partial struct ResetHealthEventJob : IJobEntity
     public void Execute(ref Health health)
     {
         health.OnValueHealthChange = false;
+        health.OnDead = false;
     }
 }
 [BurstCompile]

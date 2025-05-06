@@ -2,7 +2,7 @@
 - Project name: DOTS6.0
 - Unity version: Unity 6000.0.46f1
 - Active game object:
-  - Name: BuildingPlacementManager
+  - Name: GridDebugVisual
   - Tag: Untagged
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

@@ -12,10 +12,10 @@ partial struct HealthDeadTestSysterm : ISystem
         EntityCommandBuffer entityCommandBuffer = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
         //EntityCommandBuffer entityCommandBuffer = new(Allocator.Temp);
         //get access entity 
-        foreach ((RefRO<Health> entityHealth, 
+        foreach ((RefRW<Health> entityHealth, 
             Entity entity) 
             in 
-            SystemAPI.Query<RefRO<Health>>()
+            SystemAPI.Query<RefRW<Health>>()
             .WithEntityAccess())
         {
             if(entityHealth.ValueRO.health <= 0)
@@ -25,6 +25,7 @@ partial struct HealthDeadTestSysterm : ISystem
                 //state.EntityManager.DestroyEntity(entity);
                 //using entity commander buffer to save action destroy entity
                 //excute later
+                entityHealth.ValueRW.OnDead = true;
                 entityCommandBuffer.DestroyEntity(entity);
             }
         }

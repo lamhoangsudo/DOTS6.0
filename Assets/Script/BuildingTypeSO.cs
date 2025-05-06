@@ -10,6 +10,7 @@ public class BuildingTypeSO : ScriptableObject
         ZomebieSpawner = 1,
         Tower = 2,
         Barracks = 3,
+        HQ = 4,
     }
     public BuildingType buildingType;
     public GameObject prefab;

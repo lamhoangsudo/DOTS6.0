@@ -56,4 +56,12 @@ partial struct AnimationDataHolderBakingSysterm : ISystem
             //error unallocated memory
         }
     }
+    [BurstCompile]
+    public void onDestroy(ref SystemState state)
+    {
+        foreach (RefRW<AnimationDataHolder> animationDataHolder in SystemAPI.Query<RefRW<AnimationDataHolder>>())
+        {
+            animationDataHolder.ValueRW.animationDataBlobArray.Dispose();
+        }
+    }
 }

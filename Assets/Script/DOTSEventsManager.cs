@@ -8,6 +8,7 @@ public class DOTSEventsManager : MonoBehaviour
 {
     public static DOTSEventsManager Instance { get; private set; }
     public event EventHandler OnBarracksUnitQueueChanged;
+    public event EventHandler OnHQDead;
     private void Awake()
     {
         if (Instance == null)
@@ -26,5 +27,9 @@ public class DOTSEventsManager : MonoBehaviour
         {
             OnBarracksUnitQueueChanged?.Invoke(entity, new EventArgs());
         }
+    }
+    public void TriggerOnHQDead()
+    {
+        OnHQDead?.Invoke(this, new EventArgs());
     }
 }
