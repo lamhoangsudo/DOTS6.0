@@ -6,6 +6,7 @@ public class GridSystermDebug : MonoBehaviour
 {
     [SerializeField] private Transform visual;
     private GridDebugSingle[,] gridDebugSingles;
+    [SerializeField] private Sprite circleSprite, arrowSprite;
     public static GridSystermDebug Instance { get; private set; }
     private bool isDebug = false;
     public void Awake()
@@ -42,8 +43,27 @@ public class GridSystermDebug : MonoBehaviour
             {
                 EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
                 int index = GridSysterm.CalculateIndex(x, y, gridSystemData.width);
-                GridSysterm.Node node = entityManager.GetComponentData<GridSysterm.Node>(gridSystemData.gridMap.gridEntityArray[index]);
-                gridDebugSingles[x, y].UpdateColor(node.data == 0 ? Color.white : Color.red);
+                int gridIndex = gridSystemData.nextGridIndex - 1;
+                if (gridIndex < 0) gridIndex = 0;
+                GridSysterm.Node node = entityManager.GetComponentData<GridSysterm.Node>(gridSystemData.gridMaps[gridIndex].gridEntityArray[index]);
+                if (node.cost == 0 && node.bestCost == 0)
+                {
+                    gridDebugSingles[x, y].SetSprite(circleSprite);
+                    gridDebugSingles[x, y].UpdateColor(Color.green);
+                }
+                else
+                {
+                    if(node.cost == byte.MaxValue)
+                    {
+                        gridDebugSingles[x, y].SetSprite(circleSprite);
+                        gridDebugSingles[x, y].UpdateColor(Color.black);
+                        continue;
+                    }
+                    gridDebugSingles[x, y].SetSprite(arrowSprite);
+                    gridDebugSingles[x, y].UpdateColor(Color.red);
+                    gridDebugSingles[x, y].SetRotation(Quaternion.Euler(90, 0, Mathf.Atan2(node.vector.y, node.vector.x) * Mathf.Rad2Deg));
+                }
+                //gridDebugSingles[x, y].UpdateColor(node.data == 0 ? Color.white : Color.red);
             }
         }
     }

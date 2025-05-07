@@ -15,4 +15,12 @@ public class GridDebugSingle : MonoBehaviour
     {
         spriteRenderer.color = color;
     }
+    public void SetSprite(Sprite sprite)
+    {
+        spriteRenderer.sprite = sprite;
+    }
+    public void SetRotation(Quaternion rotation)
+    {
+        spriteRenderer.transform.rotation = rotation;
+    }
 }

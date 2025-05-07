@@ -853,6 +853,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visual: {fileID: 4625517943885003246, guid: 6452ad8afcd85a54c8aa168bb20ce9cc, type: 3}
+  circleSprite: {fileID: 21300000, guid: a0e35f6b808bb7447826cc6c69ffe448, type: 3}
+  arrowSprite: {fileID: 21300000, guid: 0aac3aa6f7b72684cad566015dc5f233, type: 3}
 --- !u!1 &552643049
 GameObject:
   m_ObjectHideFlags: 0
