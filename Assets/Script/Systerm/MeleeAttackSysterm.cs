@@ -17,14 +17,16 @@ partial struct MeleeAttackSysterm : ISystem
             (RefRW<MeleeAttack> meleeAttack,
             RefRO<Target> target,
             RefRO<LocalTransform> localTransform,
-            RefRW<UnitMover> unitMover)
+            RefRW<TargetPositionPathQueued> targetPositionPathQueued,
+            EnabledRefRW<TargetPositionPathQueued> targetPositionPathQueuedEnabled)
             in
             SystemAPI.Query<
                 RefRW<MeleeAttack>,
                 RefRO<Target>,
                 RefRO<LocalTransform>,
-                RefRW<UnitMover>
-                >().WithDisabled<MoveOveride>())
+                RefRW<TargetPositionPathQueued>,
+                EnabledRefRW<TargetPositionPathQueued>
+                >().WithDisabled<MoveOveride>().WithPresent<TargetPositionPathQueued>())
         {
             if (target.ValueRO.targetEntity == Entity.Null) continue;
             Entity targetEntity = target.ValueRO.targetEntity;
@@ -57,13 +59,13 @@ partial struct MeleeAttackSysterm : ISystem
                 if (!isTouchingTarget)
                 {
                     //target is too far
-                    unitMover.ValueRW.movePosition = targetEntityLocalTransform.ValueRO.Position;
+                    targetPositionPathQueued.ValueRW.targetPosition = targetEntityLocalTransform.ValueRO.Position;
                 }
             }
             if(isTouchingTarget || isCloseTargetEnough)
             {
                 //target is close enough
-                unitMover.ValueRW.movePosition = localTransform.ValueRO.Position;
+                targetPositionPathQueued.ValueRW.targetPosition = localTransform.ValueRO.Position;
                 meleeAttack.ValueRW.timer -= SystemAPI.Time.DeltaTime;
                 if (meleeAttack.ValueRW.timer > 0) continue;
                 //attack

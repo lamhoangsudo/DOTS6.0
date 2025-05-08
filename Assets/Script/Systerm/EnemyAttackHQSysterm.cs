@@ -15,13 +15,16 @@ partial struct EnemyAttackHQSysterm : ISystem
     {
         Entity entityHQ = SystemAPI.GetSingletonEntity<BuildingHQ>();
         float3 HQPosition = SystemAPI.GetComponent<LocalTransform>(entityHQ).Position;
-        foreach((RefRO<EnemyAttackHQ> enemyAttackHQ, RefRW<UnitMover> unitMover, RefRO<Target> target) in SystemAPI.Query<RefRO<EnemyAttackHQ>, RefRW<UnitMover>, RefRO<Target>>().WithDisabled<MoveOveride>())
+        foreach((RefRO<EnemyAttackHQ> enemyAttackHQ, RefRW<TargetPositionPathQueued> targetPositionPathQueued, EnabledRefRW<TargetPositionPathQueued> targetPositionPathQueuedEnabled, RefRO <Target> target) 
+            in 
+            SystemAPI.Query<RefRO<EnemyAttackHQ>, RefRW<TargetPositionPathQueued>, EnabledRefRW<TargetPositionPathQueued>, RefRO<Target>>().WithDisabled<MoveOveride>().WithPresent<TargetPositionPathQueued>())
         {
             if(target.ValueRO.targetEntity != Entity.Null)
             {
                 continue;
             }
-            unitMover.ValueRW.movePosition = HQPosition;
+            targetPositionPathQueued.ValueRW.targetPosition = HQPosition;
+            targetPositionPathQueuedEnabled.ValueRW = true;
         }
     }
 }

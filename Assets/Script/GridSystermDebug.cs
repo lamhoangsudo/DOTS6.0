@@ -30,7 +30,7 @@ public class GridSystermDebug : MonoBehaviour
             {
                 Transform transform = Instantiate(visual);
                 gridDebugSingles[x, y] = transform.GetComponent<GridDebugSingle>();
-                gridDebugSingles[x, y].SetUp(x, y, gridSystemData.cellSize);
+                gridDebugSingles[x, y].SetUp(x, y, gridSystemData.cellSize, $"Node_{x}_{y}");
             }
         }
         isDebug = true;

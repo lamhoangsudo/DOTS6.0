@@ -19,12 +19,16 @@ partial struct ShootAttackSysterm : ISystem
             RefRW<ShootAttack> shootAttack,
             RefRO<Target> target,
             RefRW<UnitMover> unitMover,
+            RefRW<TargetPositionPathQueued> targetPositionPathQueued,
+            EnabledRefRW<TargetPositionPathQueued> targetPositionPathQueuedEnabled,
             Entity unitEntity)
             in SystemAPI.Query<
                 RefRW<LocalTransform>,
                 RefRW<ShootAttack>,
                 RefRO<Target>,
-                RefRW<UnitMover>>().WithDisabled<MoveOveride>().WithEntityAccess())
+                RefRW<UnitMover>,
+                RefRW<TargetPositionPathQueued>,
+                EnabledRefRW<TargetPositionPathQueued>>().WithDisabled<MoveOveride>().WithPresent<TargetPositionPathQueued>().WithEntityAccess())
         {
 
             if (target.ValueRO.targetEntity == Entity.Null)
@@ -36,16 +40,16 @@ partial struct ShootAttackSysterm : ISystem
             float distance = math.distance(localTransform.ValueRO.Position, targetLocalTransform.ValueRO.Position);
             if (distance > shootAttack.ValueRO.attackDistance)
             {
-                unitMover.ValueRW.movePosition = targetLocalTransform.ValueRO.Position;
+                targetPositionPathQueued.ValueRW.targetPosition = targetLocalTransform.ValueRO.Position;
                 continue;
             }
             else
             {
-                unitMover.ValueRW.movePosition = localTransform.ValueRO.Position;
+                targetPositionPathQueued.ValueRW.targetPosition = localTransform.ValueRO.Position;
             }
             float3 dir = targetLocalTransform.ValueRO.Position - localTransform.ValueRO.Position;
             localTransform.ValueRW.Rotation = math.slerp(localTransform.ValueRO.Rotation, quaternion.LookRotation(dir, math.up()), SystemAPI.Time.DeltaTime * unitMover.ValueRO.rotationSpeed);
-
+            targetPositionPathQueuedEnabled.ValueRW = true;
             shootAttack.ValueRW.timer -= SystemAPI.Time.DeltaTime;
             if (shootAttack.ValueRO.timer > 0f)
             {

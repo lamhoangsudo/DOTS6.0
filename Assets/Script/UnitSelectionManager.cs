@@ -188,30 +188,36 @@ public class UnitSelectionManager : MonoBehaviour
             }
             if (!isAttackingSingleTarget)
             {
-                EntityQuery entityQueryMoveOveride = new EntityQueryBuilder(Allocator.Temp).WithAll<Select>().WithPresent<MoveOveride, TargetOveride, FlowFieldPathRequest>().Build(entityManager);
+                EntityQuery entityQueryMoveOveride = new EntityQueryBuilder(Allocator.Temp).WithAll<Select>().WithPresent<MoveOveride, TargetOveride, TargetPositionPathQueued, FlowFieldPathRequest, FlowFieldFollower>().Build(entityManager);
                 NativeArray<Entity> entities = entityQueryMoveOveride.ToEntityArray(Allocator.Temp);
                 NativeArray<MoveOveride> unitMoverOverides = entityQueryMoveOveride.ToComponentDataArray<MoveOveride>(Allocator.Temp);
                 NativeArray<TargetOveride> unitTargetOverides = entityQueryMoveOveride.ToComponentDataArray<TargetOveride>(Allocator.Temp);
+                NativeArray<TargetPositionPathQueued> targetPositionPathQueueds = entityQueryMoveOveride.ToComponentDataArray<TargetPositionPathQueued>(Allocator.Temp);
                 NativeArray<FlowFieldPathRequest> flowFieldPathRequests = entityQueryMoveOveride.ToComponentDataArray<FlowFieldPathRequest>(Allocator.Temp);
+                NativeArray<FlowFieldFollower> flowFieldFollowers = entityQueryMoveOveride.ToComponentDataArray<FlowFieldFollower>(Allocator.Temp);
                 NativeArray<float3> positionArray = GenerateMovePositionArray(MouseWorldPositionManager.mouseWorldPositionManager.GetMousePosition(), unitMoverOverides.Length);
                 for (int i = 0; i < unitMoverOverides.Length; i++)
                 {
                     TargetOveride targetOveride = unitTargetOverides[i];
                     targetOveride.targetEntity = Entity.Null;
                     unitTargetOverides[i] = targetOveride;
+
                     MoveOveride unitMoveOveride = unitMoverOverides[i];
                     unitMoveOveride.targetPosition = positionArray[i];
                     unitMoverOverides[i] = unitMoveOveride;
                     entityManager.SetComponentEnabled<MoveOveride>(entities[i], true);
 
-                    FlowFieldPathRequest flowFieldPathRequest = flowFieldPathRequests[i];
-                    flowFieldPathRequest.targetPosition = positionArray[i];
-                    flowFieldPathRequests[i] = flowFieldPathRequest;
-                    entityManager.SetComponentEnabled<FlowFieldPathRequest>(entities[i], true);
+                    TargetPositionPathQueued targetPositionPathQueued = targetPositionPathQueueds[i];
+                    targetPositionPathQueued.targetPosition = positionArray[i];
+                    targetPositionPathQueueds[i] = targetPositionPathQueued;
+                    entityManager.SetComponentEnabled<TargetPositionPathQueued>(entities[i], true);
+
+                    entityManager.SetComponentEnabled<FlowFieldFollower>(entities[i], false);
+                    entityManager.SetComponentEnabled<FlowFieldPathRequest>(entities[i], false);
                 }
                 entityQueryMoveOveride.CopyFromComponentDataArray<MoveOveride>(unitMoverOverides);
                 entityQueryMoveOveride.CopyFromComponentDataArray<TargetOveride>(unitTargetOverides);
-                entityQueryMoveOveride.CopyFromComponentDataArray<FlowFieldPathRequest>(flowFieldPathRequests);
+                entityQueryMoveOveride.CopyFromComponentDataArray<TargetPositionPathQueued>(targetPositionPathQueueds);
             }
 
             //Handle barracks rally point
