@@ -43,7 +43,12 @@ partial struct MeleeAttackSysterm : ISystem
                     (math.normalize(targetEntityLocalTransform.ValueRO.Position - localTransform.ValueRO.Position)) 
                     * meleeAttack.ValueRO.colliderSize
                     + 0.4f,
-                    Filter = CollisionFilter.Default,
+                    Filter = new CollisionFilter
+                    {
+                        BelongsTo = ~0u,
+                        CollidesWith = 1u << GameAssets.UNIT_LAYER | 1u << GameAssets.BUILDINGS_LAYER,
+                        GroupIndex = 0,
+                    },
                 };
                 raycastHitList.Clear();
                 collisionWorld.CastRay(raycastInput, ref raycastHitList);

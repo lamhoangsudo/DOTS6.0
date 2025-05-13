@@ -277,23 +277,22 @@ public partial struct GridSysterm : ISystem
     {
         NativeList<RefRW<GridSysterm.Node>> neighborNodeList = new NativeList<RefRW<GridSysterm.Node>>(Allocator.Temp);
         int2 currentGridPosition = new int2(currentNode.ValueRW.x, currentNode.ValueRW.y);
-        int2[] neighborOffsets = new int2[]
-        {
-            new int2(0, 1), // Up
-            new int2(1, 0), // Right
-            new int2(0, -1), // Down
-            new int2(-1, 0), // Left
-            new int2(1, 1), // Up-Right
-            new int2(1, -1), // Down-Right
-            new int2(-1, 1), // Up-Left
-            new int2(-1, -1) // Down-Left
-        };
+        NativeArray<int2> neighborOffsets = new(8, Allocator.Temp);
+        neighborOffsets[0] = new int2(0, 1); // Up
+        neighborOffsets[1] = new int2(1, 0); // Right
+        neighborOffsets[2] = new int2(0, -1); // Down
+        neighborOffsets[3] = new int2(-1, 0); // Left
+        neighborOffsets[4] = new int2(1, 1); // Up-Right
+        neighborOffsets[5] = new int2(1, -1); // Down-Right
+        neighborOffsets[6] = new int2(-1, 1); // Up-Left
+        neighborOffsets[7] = new int2(-1, -1); // Down-Left
         foreach (int2 offset in neighborOffsets)
         {
             int2 neighborGridPosition = currentGridPosition + offset;
             if (!IsInGrid(neighborGridPosition, gridSystemData.width, gridSystemData.height)) continue;
             neighborNodeList.Add(nodeArray[CalculateIndex(neighborGridPosition.x, neighborGridPosition.y, gridSystemData.width)]);
         }
+        neighborOffsets.Dispose();
         return neighborNodeList;
     }
     public static int CalculateIndex(int x, int y, int width)

@@ -2,7 +2,7 @@
 - Project name: DOTS6.0
 - Unity version: Unity 6000.0.48f1
 - Active game object:
-  - Name: Cube
+  - Name: FogOfWarPersistentVisual
   - Tag: Untagged
-  - Layer: PathFinding_Wall
+  - Layer: FogOfWarVisual
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
