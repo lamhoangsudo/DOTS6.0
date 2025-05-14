@@ -37,10 +37,11 @@ public class BuildingPlacementManager : MonoBehaviour
         {
             SetActiveBuildingTypeSO(GameAssets.instance.buildingTypeListSO.defaultBuildingTypeSO);
         }
-        if (Input.GetMouseButtonDown(0) && building.buildingType != BuildingTypeSO.BuildingType.None)
+        if (Input.GetMouseButtonDown(0) && building.buildingType != BuildingTypeSO.BuildingType.None && ResourceManager.Instance.HasEnoughResource(building.resourceCost))
         {
             Vector3 pos = MouseWorldPositionManager.mouseWorldPositionManager.GetMousePosition();
             if (!CanPlaceBuilding(pos)) return;
+            ResourceManager.Instance.SpendResourceAmount(building.resourceCost);
             EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             EntityReferenecs entityReferenecs = entityManager.CreateEntityQuery(typeof(EntityReferenecs)).GetSingleton<EntityReferenecs>();
             Entity spawnedEntity = entityManager.Instantiate(building.GetPrefabEntity(entityReferenecs));
@@ -61,7 +62,7 @@ public class BuildingPlacementManager : MonoBehaviour
             //...00000001
             //...00001000
             //only affects layer 6
-            CollidesWith = 1u << GameAssets.BUILDINGS_LAYER,
+            CollidesWith = 1u << GameAssets.BUILDINGS_LAYER | 1u << GameAssets.RESOURCE_NODE,
             GroupIndex = 0,
         };
         UnityEngine.BoxCollider boxCollider = building.prefab.GetComponent<UnityEngine.BoxCollider>();
@@ -73,6 +74,7 @@ public class BuildingPlacementManager : MonoBehaviour
         distanceHits.Clear();
         if (collisionWorld.OverlapSphere(pos, building.buildingDistanceMin, ref distanceHits, collisionFilter))
         {
+            //hit something with the same building type
             foreach (DistanceHit distanceHit in distanceHits)
             {
                 if (entityManager.HasComponent<BuildingTypeSOHolder>(distanceHit.Entity))
@@ -84,6 +86,32 @@ public class BuildingPlacementManager : MonoBehaviour
                 }
             }
         }
+        distanceHits.Clear();
+        if (building is BuildingResourceHarversterTypeSO buildingResourceHarversterTypeSO)
+        {
+            bool hasValidNearbyResource = false;
+            if (collisionWorld.OverlapSphere(pos, buildingResourceHarversterTypeSO.harverstDistance, ref distanceHits, collisionFilter))
+            {
+                //hit something with the same resource type
+                foreach (DistanceHit distanceHit in distanceHits)
+                {
+                    if (entityManager.HasComponent<ResourceTypeSOHolder>(distanceHit.Entity))
+                    {
+                        if (entityManager.GetComponentData<ResourceTypeSOHolder>(distanceHit.Entity).resourceType == buildingResourceHarversterTypeSO.resourceType)
+                        {
+                            hasValidNearbyResource = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!hasValidNearbyResource)
+            {
+                return false;
+            }
+        }
+        distanceHits.Clear();
+        distanceHits.Dispose();
         return true;
     }
     public BuildingTypeSO GetActiveBuildingTypeSO()
@@ -95,7 +123,7 @@ public class BuildingPlacementManager : MonoBehaviour
         building = buildingTypeSO;
         if (ghost != null) Destroy(ghost.gameObject);
         if (building.buildGhost != null) ghost = Instantiate(building.buildGhost);
-        foreach(MeshRenderer meshRenderer in ghost.GetComponentsInChildren<MeshRenderer>())
+        foreach (MeshRenderer meshRenderer in ghost.GetComponentsInChildren<MeshRenderer>())
         {
             meshRenderer.material = material;
         }

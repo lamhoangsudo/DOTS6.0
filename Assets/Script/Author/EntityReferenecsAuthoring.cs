@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EntityReferenecsAuthoring : MonoBehaviour
 {
-    [SerializeField] private GameObject bullet, zombie, shootLight, soldier, scout, buildingbarracksPrefab, buildingTowerPrefab;
+    [SerializeField] private GameObject bullet, zombie, shootLight, soldier, scout, buildingbarracksPrefab, buildingTowerPrefab, buildingIronMine, buildingGoldMine, buildingoilMine;
     public class EntityReferenecsAuthoringBaker : Baker<EntityReferenecsAuthoring>
     {
         public override void Bake(EntityReferenecsAuthoring authoring)
@@ -17,7 +17,10 @@ public class EntityReferenecsAuthoring : MonoBehaviour
                 soldier = GetEntity(authoring.soldier, TransformUsageFlags.Dynamic),
                 scout = GetEntity(authoring.scout, TransformUsageFlags.Dynamic),
                 buildingbarracksPrefabEntity = GetEntity(authoring.buildingbarracksPrefab, TransformUsageFlags.Dynamic),
-                buildingTowerPrefabEntity = GetEntity(authoring.buildingTowerPrefab, TransformUsageFlags.Dynamic)
+                buildingTowerPrefabEntity = GetEntity(authoring.buildingTowerPrefab, TransformUsageFlags.Dynamic),
+                buildingIronMinePrefabEntity = GetEntity(authoring.buildingIronMine, TransformUsageFlags.Dynamic),
+                buildingGoldMinePrefabEntity = GetEntity(authoring.buildingGoldMine, TransformUsageFlags.Dynamic),
+                buildingOilMinePrefabEntity = GetEntity(authoring.buildingoilMine, TransformUsageFlags.Dynamic)
             });
         }
     }

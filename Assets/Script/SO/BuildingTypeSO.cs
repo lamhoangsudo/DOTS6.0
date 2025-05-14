@@ -11,6 +11,9 @@ public class BuildingTypeSO : ScriptableObject
         Tower = 2,
         Barracks = 3,
         HQ = 4,
+        GoldMine = 5,
+        IronMine = 6,
+        OilMine = 7,
     }
     public BuildingType buildingType;
     public GameObject prefab;
@@ -18,12 +21,16 @@ public class BuildingTypeSO : ScriptableObject
     public bool showInBuildingPlacementUI;
     public Sprite icon;
     public Transform buildGhost;
+    public ResourceAmount[] resourceCost;
     public Entity GetPrefabEntity(EntityReferenecs entityReferenecs)
     {
         return buildingType switch
         {
             BuildingType.Tower => entityReferenecs.buildingTowerPrefabEntity,
             BuildingType.Barracks => entityReferenecs.buildingbarracksPrefabEntity,
+            BuildingType.IronMine => entityReferenecs.buildingIronMinePrefabEntity,
+            BuildingType.GoldMine => entityReferenecs.buildingGoldMinePrefabEntity,
+            BuildingType.OilMine => entityReferenecs.buildingOilMinePrefabEntity,
             _ => entityReferenecs.buildingTowerPrefabEntity,
         };
     }

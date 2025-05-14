@@ -17,6 +17,9 @@ public class BuildingBarracksUI : MonoBehaviour
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         scoutBtn.onClick.AddListener(() =>
         {
+            UnitTypeSO unitTypeSO = GameAssets.instance.unitTypeListSO.GetUnitTypeSO(UnitTypeSO.UnitType.Scout);
+            if(!ResourceManager.Instance.HasEnoughResource(unitTypeSO.resourceAmounts)) return;
+            ResourceManager.Instance.SpendResourceAmount(unitTypeSO.resourceAmounts);
             spawnUnitTypes = entityManager.GetBuffer<SpawnUnitType>(buildingBarracksEntity, false);
             entityManager.SetComponentData(buildingBarracksEntity, new BuildingBarracksUnitEnqueue
             {
@@ -26,6 +29,9 @@ public class BuildingBarracksUI : MonoBehaviour
         });
         soldierBtn.onClick.AddListener(() =>
         {
+            UnitTypeSO unitTypeSO = GameAssets.instance.unitTypeListSO.GetUnitTypeSO(UnitTypeSO.UnitType.Soldier);
+            if (!ResourceManager.Instance.HasEnoughResource(unitTypeSO.resourceAmounts)) return;
+            ResourceManager.Instance.SpendResourceAmount(unitTypeSO.resourceAmounts);
             spawnUnitTypes = entityManager.GetBuffer<SpawnUnitType>(buildingBarracksEntity, false);
             entityManager.SetComponentData(buildingBarracksEntity, new BuildingBarracksUnitEnqueue
             {
