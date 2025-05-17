@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: OilMine
   m_EditorClassIdentifier: 
   buildingType: 7
+  constructionTimeMax: 10
+  constructionYOffset: -9.82
   prefab: {fileID: 3360846567312847997, guid: 0ebba0b6afd7b6a40b131aba07a9f6db, type: 3}
   buildingDistanceMin: 10
   showInBuildingPlacementUI: 1

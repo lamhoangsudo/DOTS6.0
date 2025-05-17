@@ -44,8 +44,24 @@ public class BuildingPlacementManager : MonoBehaviour
             ResourceManager.Instance.SpendResourceAmount(building.resourceCost);
             EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             EntityReferenecs entityReferenecs = entityManager.CreateEntityQuery(typeof(EntityReferenecs)).GetSingleton<EntityReferenecs>();
-            Entity spawnedEntity = entityManager.Instantiate(building.GetPrefabEntity(entityReferenecs));
-            entityManager.SetComponentData<LocalTransform>(spawnedEntity, LocalTransform.FromPosition(pos));
+            //Entity buildingContructionEntityVisual = entityManager.Instantiate(building.GetPrefabEntity(entityReferenecs));
+            //entityManager.SetComponentData<LocalTransform>(buildingContructionEntityVisual, LocalTransform.FromPosition(pos));
+
+            Entity buildingContructionEntityVisual = entityManager.Instantiate(building.GetVisualPrefabEntity(entityReferenecs));
+            entityManager.SetComponentData<LocalTransform>(buildingContructionEntityVisual, LocalTransform.FromPosition(new float3(pos.x, pos.y + building.constructionYOffset, pos.z)));
+
+            Entity buildingContructionEntity = entityManager.Instantiate(entityReferenecs.buildingContructionPrefabEntity);
+            entityManager.SetComponentData<LocalTransform>(buildingContructionEntity, LocalTransform.FromPosition(pos));
+            entityManager.SetComponentData(buildingContructionEntity, new BuildingContruction
+            {
+                buildingType = building.buildingType,
+                progress = 0f,
+                maxProgress = building.constructionTimeMax,
+                finalPrefabEntity = building.GetPrefabEntity(entityReferenecs),
+                visualEntity = buildingContructionEntityVisual,
+                startPosition = new float3(pos.x, pos.y + building.constructionYOffset, pos.z),
+                endPosition = pos,
+            });
         }
     }
     private bool CanPlaceBuilding(Vector3 pos)
@@ -81,6 +97,15 @@ public class BuildingPlacementManager : MonoBehaviour
                 {
                     if (entityManager.GetComponentData<BuildingTypeSOHolder>(distanceHit.Entity).buildingTypeSO == building.buildingType)
                     {
+                        //same building type too close
+                        return false;
+                    }
+                }
+                if (entityManager.HasComponent<BuildingContruction>(distanceHit.Entity))
+                {
+                    if (entityManager.GetComponentData<BuildingContruction>(distanceHit.Entity).buildingType == building.buildingType)
+                    {
+                        //same contruction building type too close
                         return false;
                     }
                 }

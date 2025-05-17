@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: GoldMine
   m_EditorClassIdentifier: 
   buildingType: 5
+  constructionTimeMax: 10
+  constructionYOffset: -5.17
   prefab: {fileID: 975569369008724208, guid: 5096edfcb313cfd4ab0bba70100bf09b, type: 3}
   buildingDistanceMin: 10
   showInBuildingPlacementUI: 1

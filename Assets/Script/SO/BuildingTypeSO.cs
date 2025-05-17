@@ -16,6 +16,8 @@ public class BuildingTypeSO : ScriptableObject
         OilMine = 7,
     }
     public BuildingType buildingType;
+    public float constructionTimeMax;
+    public float constructionYOffset;
     public GameObject prefab;
     public float buildingDistanceMin;
     public bool showInBuildingPlacementUI;
@@ -27,11 +29,23 @@ public class BuildingTypeSO : ScriptableObject
         return buildingType switch
         {
             BuildingType.Tower => entityReferenecs.buildingTowerPrefabEntity,
-            BuildingType.Barracks => entityReferenecs.buildingbarracksPrefabEntity,
+            BuildingType.Barracks => entityReferenecs.buildingBarracksPrefabEntity,
             BuildingType.IronMine => entityReferenecs.buildingIronMinePrefabEntity,
             BuildingType.GoldMine => entityReferenecs.buildingGoldMinePrefabEntity,
             BuildingType.OilMine => entityReferenecs.buildingOilMinePrefabEntity,
             _ => entityReferenecs.buildingTowerPrefabEntity,
+        };
+    }
+    public Entity GetVisualPrefabEntity(EntityReferenecs entityReferenecs)
+    {
+        return buildingType switch
+        {
+            BuildingType.Tower => entityReferenecs.buildingVisualTowerPrefabEntity,
+            BuildingType.Barracks => entityReferenecs.buildingVisualBarracksPrefabEntity,
+            BuildingType.IronMine => entityReferenecs.buildingVisualIronMinePrefabEntity,
+            BuildingType.GoldMine => entityReferenecs.buildingVisualGoldMinePrefabEntity,
+            BuildingType.OilMine => entityReferenecs.buildingVisualOilMinePrefabEntity,
+            _ => entityReferenecs.buildingVisualTowerPrefabEntity,
         };
     }
 }

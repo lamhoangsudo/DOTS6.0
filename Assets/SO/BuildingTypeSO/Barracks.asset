@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Barracks
   m_EditorClassIdentifier: 
   buildingType: 3
+  constructionTimeMax: 10
+  constructionYOffset: -2.9
   prefab: {fileID: 461822831297961952, guid: 3203f93a55229c34f8f5ad11072d5358, type: 3}
   buildingDistanceMin: 5
   showInBuildingPlacementUI: 1

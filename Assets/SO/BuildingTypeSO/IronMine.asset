@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: IronMine
   m_EditorClassIdentifier: 
   buildingType: 6
+  constructionTimeMax: 10
+  constructionYOffset: -2.45
   prefab: {fileID: 3720944700256558833, guid: e03e9764ff5f84a439b599db55a71413, type: 3}
   buildingDistanceMin: 10
   showInBuildingPlacementUI: 1
