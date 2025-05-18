@@ -39,7 +39,6 @@ partial struct HordeSysterm : ISystem
                         entityCommandBuffer.SetComponent<LocalTransform>(zombieEntity, LocalTransform.FromPosition(spawnPosition));
                         entityCommandBuffer.AddComponent<EnemyAttackHQ>(zombieEntity);
                         horde.ValueRW.spawnCount--;
-                        Debug.Log($"Spawned {horde.ValueRO.spawnCount} zombies");
                     }
                 }
             }

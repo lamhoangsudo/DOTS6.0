@@ -10,6 +10,10 @@ using UnityEngine.Rendering;
 [UpdateInGroup(typeof(PostBakingSystemGroup))]
 partial struct AnimationDataHolderBakingSysterm : ISystem
 {
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<AnimationDataHolderObject>();
+    }
     public void OnUpdate(ref SystemState state)
     {
         AnimationDataListSO animationDataListSO = null;

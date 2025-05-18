@@ -23,7 +23,7 @@ public class BuildingPlacementManagerUI : MonoBehaviour
     }
     private void Start()
     {
-        BuildingPlacementManager.buildingPlacementManager.OnSelectedBuildingTypeSOChanged += BuildingPlacementManager_OnSelectedBuildingTypeSOChanged; ;
+        BuildingPlacementManager.buildingPlacementManager.OnSelectedBuildingTypeSOChanged += BuildingPlacementManager_OnSelectedBuildingTypeSOChanged;
         UpdateSelectVisual();
     }
 

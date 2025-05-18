@@ -15,6 +15,8 @@ public class UnitTypeSO : ScriptableObject
     public float progress;
     public Sprite sprite;
     public ResourceAmount[] resourceAmounts;
+    public GameObject ragdollPrefab;
+
     public Entity GetPrefabEntity(EntityReferenecs entityReferenecs)
     {
         return unitType switch

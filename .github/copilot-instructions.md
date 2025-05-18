@@ -2,7 +2,7 @@
 - Project name: DOTS6.0
 - Unity version: Unity 6000.0.48f1
 - Active game object:
-  - Name: SoldierUnit (8)
+  - Name: Plane
   - Tag: Untagged
-  - Layer: Unit
+  - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

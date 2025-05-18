@@ -20,3 +20,4 @@ MonoBehaviour:
     amount: 5
   - resourceType: 2
     amount: 5
+  ragdollPrefab: {fileID: 3823508845899425078, guid: f46b11393b2094f4697904119030ad0d, type: 3}

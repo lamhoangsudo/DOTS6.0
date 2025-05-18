@@ -11,14 +11,14 @@ public class UnitTypeSOHolderAuthoring : MonoBehaviour
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new UnitTypeSOHolder
             {
-                unitTypeSO = authoring.unitTypeSO
+                unitType = authoring.unitTypeSO
             });
         }
     }
 }
 public struct UnitTypeSOHolder : IComponentData
 {
-    public UnitTypeSO.UnitType unitTypeSO;
+    public UnitTypeSO.UnitType unitType;
 }
 
 

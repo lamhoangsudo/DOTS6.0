@@ -5,7 +5,7 @@ using Unity.Transforms;
 
 partial struct RandomWalkingSysterm : ISystem
 {
-    [BurstCompile]
+    //[BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         foreach ((

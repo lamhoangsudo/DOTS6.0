@@ -1,4 +1,4 @@
-//#define GRID_DEBUG
+#define GRID_DEBUG
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -42,8 +42,8 @@ public partial struct GridSysterm : ISystem
 #endif
     public void OnCreate(ref SystemState state)
     {
-        int width = 10;
-        int height = 10;
+        int width = 160;
+        int height = 160;
         float cellSize = 5.0f;
         int totalCells = width * height;
         Entity entityNode = state.EntityManager.CreateEntity();
